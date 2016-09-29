@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Exits</string>
+    <string name="title_activity_history">History</string>
+    <string name="title_activity_trip">Trip</string>
+    <string name="lbl_nearest_station">Nearest station</string>
+    <string name="lbl_sample_nearest_station">Central</string>
+    <string name="lbl_destination_prompt">Where do you want to go?</string>
+    <string name="lbl_btn_complete">Go!</string>
+    <string name="tv_todo">Trip history goes here...</string>
+    <string name="tv_todo1">Place recommended path result here!</string>
+
+    <string-array name="exits_array">
+        <item>Exit 1</item>
+        <item>Exit 2</item>
+        <item>Exit 3</item>
+        <item>Exit 4</item>
+        <item>Exit 5</item>
+        <item>Exit 6</item>
+        <item>Exit 7</item>
+    </string-array>
+</resources>
