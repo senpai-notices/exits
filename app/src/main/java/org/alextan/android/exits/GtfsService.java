@@ -15,7 +15,6 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
-import retrofit2.http.Query;
 
 public interface GtfsService {
     String GTFS_URL = "***REMOVED***";
@@ -24,17 +23,8 @@ public interface GtfsService {
     String API_KEY_HEADER = API_KEY_KEY + ": " + API_KEY_VALUE;
 
     @Headers(API_KEY_HEADER)
-    @GET("/api/v2/gtfs/_table/stops")
-    Call<StationData> getStationsOld(@Query("filter") String filter);
-
-    @Headers(API_KEY_HEADER)
     @GET("/api/v2/gtfs/_table/stations")
-    Call<StationData> getStations();
-
-
-    @Headers(API_KEY_HEADER)
-    @GET("/api/v2/gtfs/_table/stations")
-    Call<DreamFactoryJsonResponse<Station>> testing();
+    Call<DreamFactoryJsonResponse<Station>> getAllStations();
 
     Type stationType = new TypeToken<DreamFactoryJsonResponse<Station>>(){}.getType();
     Gson gson = new GsonBuilder()

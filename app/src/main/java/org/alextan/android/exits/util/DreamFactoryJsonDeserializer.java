@@ -28,16 +28,9 @@ public class DreamFactoryJsonDeserializer<T> implements JsonDeserializer<DreamFa
         JsonArray jsonArray = jsonObject.entrySet().iterator().next().getValue().getAsJsonArray();
         List<T> list = new ArrayList<>();
         for(JsonElement element: jsonArray) {
-/*            JsonElement innerElement = element.getAsJsonObject().entrySet().iterator().next().getValue();
-            list.add((T) context.deserialize(innerElement, clazz));*/
-            /*String key = element.getAsJsonObject().entrySet().iterator().next().getKey();
-            JsonElement e = element.getAsJsonObject().entrySet().iterator().next().getValue();
-            JsonObject obj = new JsonObject();
-            obj.addProperty("key", e.getAsString());
-            list.add((T) context.deserialize(obj, clazz));*/
             Gson gson = new Gson();
-            T obj2 = gson.fromJson(element, clazz);
-            list.add(obj2);
+            T obj = gson.fromJson(element, clazz);
+            list.add(obj);
         }
         return new DreamFactoryJsonResponse<>(list);
     }
