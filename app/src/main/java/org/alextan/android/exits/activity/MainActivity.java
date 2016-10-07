@@ -1,8 +1,8 @@
 package org.alextan.android.exits.activity;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 
 import org.alextan.android.exits.R;
+
 
 /**
  * The first activity of the app.
@@ -47,6 +48,17 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        Button mBtnTest = (Button) findViewById(R.id.btnTest);
+        if (mBtnTest != null) {
+            mBtnTest.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getApplicationContext(), StationsActivity.class);
+                    startActivity(intent);
+                }
+            });
+        }
     }
 
     @Override

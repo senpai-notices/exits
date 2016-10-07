@@ -76,5 +76,10 @@
         android:layout_height="wrap_content"
         android:text="@string/lbl_btn_complete"
         android:id="@+id/button"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="test get stations"
+        android:id="@+id/btnTest"/>
 
 </LinearLayout>
