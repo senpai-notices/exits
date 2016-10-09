@@ -1,4 +1,4 @@
-package org.alextan.android.exits;
+package org.alextan.android.exits.service;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -6,6 +6,7 @@ import com.google.gson.reflect.TypeToken;
 
 import org.alextan.android.exits.model.DreamFactoryJsonResponse;
 import org.alextan.android.exits.model.Station;
+import org.alextan.android.exits.model.StationLocation;
 import org.alextan.android.exits.util.DreamFactoryJsonDeserializer;
 
 import java.lang.reflect.Type;
@@ -26,9 +27,14 @@ public interface GtfsService {
     @GET("/api/v2/gtfs/_table/stations")
     Call<DreamFactoryJsonResponse<Station>> getAllStations();
 
+    @Headers(API_KEY_HEADER)
+    @GET("/api/v2/gtfs/_table/train_parent_stops")
+    Call<DreamFactoryJsonResponse<StationLocation>> getAllStationLocations();
+
     Type stationType = new TypeToken<DreamFactoryJsonResponse<Station>>(){}.getType();
     Gson gson = new GsonBuilder()
             .registerTypeAdapter(stationType, new DreamFactoryJsonDeserializer<>(Station.class))
+            .registerTypeAdapter(stationType, new DreamFactoryJsonDeserializer<>(StationLocation.class))
             .create();
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(GTFS_URL)

@@ -3,7 +3,6 @@
     <string name="title_activity_history">History</string>
     <string name="title_activity_trip">Trip</string>
     <string name="lbl_nearest_station">Nearest station</string>
-    <string name="lbl_sample_nearest_station">Central</string>
     <string name="lbl_destination_prompt">Where do you want to go?</string>
     <string name="lbl_btn_complete">Go!</string>
     <string name="tv_todo">Trip history goes here...</string>

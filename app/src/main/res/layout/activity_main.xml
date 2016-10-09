@@ -35,9 +35,10 @@
             android:tint="@color/colorAccent"/>
 
         <TextView
+            android:id="@+id/act_main_tv_nearest_station"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/lbl_sample_nearest_station"
+            android:text="Some station"
             android:textSize="30dp"/>
     </LinearLayout>
 
@@ -64,7 +65,7 @@
     <Spinner
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/spinner"/>
+        android:id="@+id/sp_station_exits"/>
 
     <Space
         android:layout_width="wrap_content"
@@ -75,11 +76,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/lbl_btn_complete"
-        android:id="@+id/button"/>
+        android:id="@+id/act_main_btn_go"/>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="test get stations"
-        android:id="@+id/btnTest"/>
+        android:id="@+id/act_main_btn_test"/>
 
 </LinearLayout>
