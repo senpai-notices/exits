@@ -8,7 +8,7 @@ import android.widget.TextView;
 import org.alextan.android.exits.R;
 import org.alextan.android.exits.model.DreamFactoryJsonResponse;
 import org.alextan.android.exits.model.Station;
-import org.alextan.android.exits.service.GtfsService2;
+import org.alextan.android.exits.service.GtfsService;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -39,7 +39,7 @@ public class StationsActivity extends AppCompatActivity {
         protected List<String> doInBackground(Void... params) {
             List<String> result = new LinkedList<>();
 
-            GtfsService2 gtfsService = GtfsService2.retrofit.create(GtfsService2.class);
+            GtfsService gtfsService = GtfsService.retrofit.create(GtfsService.class);
             Call<DreamFactoryJsonResponse<Station>> call = gtfsService.getAllStations();
             DreamFactoryJsonResponse<Station> response = null;
             try {

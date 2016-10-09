@@ -32,9 +32,10 @@ public interface GtfsService {
     Call<DreamFactoryJsonResponse<StationLocation>> getAllStationLocations();
 
     Type stationType = new TypeToken<DreamFactoryJsonResponse<Station>>(){}.getType();
+    Type stationLocationType = new TypeToken<DreamFactoryJsonResponse<StationLocation>>(){}.getType();
     Gson gson = new GsonBuilder()
             .registerTypeAdapter(stationType, new DreamFactoryJsonDeserializer<>(Station.class))
-            .registerTypeAdapter(stationType, new DreamFactoryJsonDeserializer<>(StationLocation.class))
+            .registerTypeAdapter(stationLocationType, new DreamFactoryJsonDeserializer<>(StationLocation.class))
             .create();
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(GTFS_URL)
