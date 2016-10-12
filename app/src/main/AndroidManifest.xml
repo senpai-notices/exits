@@ -27,7 +27,7 @@
         </activity>
         <activity android:name=".activity.SettingsActivity">
         </activity>
-        <activity android:name=".activity.StationsActivity">
+        <activity android:name=".activity.Stations2Activity">
         </activity>
         <activity android:name=".activity.SplashActivity">
             <intent-filter>
@@ -49,9 +49,6 @@
         <meta-data
             android:name="DOMAIN_PACKAGE_NAME"
             android:value="org.alextan.android.exits.model.local"/>
-
-        <activity android:name=".activity.Stations2Activity">
-        </activity>
     </application>
 
 </manifest>
