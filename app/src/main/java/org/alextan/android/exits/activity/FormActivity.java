@@ -43,7 +43,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
 
-
 /**
  * The first activity of the app.
  * Automatically fetches nearest train station.

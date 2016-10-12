@@ -52,11 +52,11 @@
         android:text="@string/lbl_destination_prompt"
         android:textSize="20dp"/>
 
-    <EditText
-        android:layout_width="250dp"
+    <Button
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:textSize="30dp"/>
+        android:text="test get stations"
+        android:id="@+id/act_main_btn_test"/>
 
     <Space
         android:layout_width="wrap_content"
@@ -77,10 +77,6 @@
         android:layout_height="wrap_content"
         android:text="@string/lbl_btn_complete"
         android:id="@+id/act_main_btn_go"/>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="test get stations"
-        android:id="@+id/act_main_btn_test"/>
+
 
 </LinearLayout>
