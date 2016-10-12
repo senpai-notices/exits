@@ -1,20 +1,22 @@
 package org.alextan.android.exits.adapter;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
+
 import org.alextan.android.exits.R;
 import org.alextan.android.exits.model.StationLocation;
 
 import java.util.List;
 
-public class StationAdapter extends RecyclerView.Adapter<StationAdapter.ViewHolder> {
+public class StationAdapter extends RecyclerView.Adapter<StationAdapter.ViewHolder> implements FastScrollRecyclerView.SectionedAdapter{
 
     private Context mContext;
     private List<StationLocation> mStations;
@@ -26,7 +28,6 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.ViewHold
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Log.d("oncreateviewholder", "hi");
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.station_item, parent, false);
         return new ViewHolder(itemView);
     }
@@ -39,6 +40,12 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.ViewHold
     @Override
     public int getItemCount() {
         return mStations.size();
+    }
+
+    @NonNull
+    @Override
+    public String getSectionName(int position) {
+        return mStations.get(position).getStopName().substring(0, 1);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -62,8 +69,6 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.ViewHold
 
         public void setItem(StationLocation item) {
             mItem = item;
-            Log.d("setItem", "hi");
-
             mTvStationName.setText(mItem.getStopName());
         }
     }
