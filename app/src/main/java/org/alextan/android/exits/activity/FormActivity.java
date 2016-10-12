@@ -11,7 +11,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -33,18 +32,14 @@ import org.alextan.android.exits.R;
 import org.alextan.android.exits.model.DreamFactoryResource;
 import org.alextan.android.exits.model.StationLocation;
 import org.alextan.android.exits.service.GtfsService;
+import org.alextan.android.exits.util.LocationMath;
 
 import java.io.IOException;
-import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
-
-import static org.alextan.android.exits.util.GetNearestStation.pythagoreanTheorem;
 
 
 /**
@@ -54,7 +49,7 @@ import static org.alextan.android.exits.util.GetNearestStation.pythagoreanTheore
  */
 public class FormActivity extends AppCompatActivity
         implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
-        LocationListener {
+        LocationListener, View.OnClickListener {
 
     @BindView(R.id.act_main_btn_go)
     Button mBtnGo;
@@ -68,8 +63,10 @@ public class FormActivity extends AppCompatActivity
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
 
-    private long UPDATE_INTERVAL = 10 * 1000;  /* 10 secs */
-    private long FASTEST_INTERVAL = 2000; /* 2 sec */
+    private long UPDATE_INTERVAL = 10 * 1000;
+    private long FASTEST_INTERVAL = 2000;
+
+    static final int REQUEST_PICK_STATION = 11;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +76,6 @@ public class FormActivity extends AppCompatActivity
         initialiseLocationServices();
         initialiseUi();
     }
-
 
     private void initialiseLocationServices() {
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -92,7 +88,6 @@ public class FormActivity extends AppCompatActivity
     protected void onStop() {
         LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
 
-        // only stop if it's connected, otherwise we crash
         if (mGoogleApiClient != null) {
             mGoogleApiClient.disconnect();
         }
@@ -115,21 +110,8 @@ public class FormActivity extends AppCompatActivity
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         mSpinnerStationExits.setAdapter(adapter);
-
-        mBtnGo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), TripActivity.class);
-                startActivity(intent);
-            }
-        });
-        mBtnTest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), Stations2Activity.class);
-                startActivity(intent);
-            }
-        });
+        mBtnGo.setOnClickListener(this);
+        mBtnTest.setOnClickListener(this);
 
     }
 
@@ -193,26 +175,42 @@ public class FormActivity extends AppCompatActivity
 
     @Override
     public void onLocationChanged(Location location) {
-        Log.d("onLocChanged(): ", "START");
-        // New location has now been determined
         String msg = "Updated Location: " +
                 Double.toString(location.getLatitude()) + "," +
                 Double.toString(location.getLongitude());
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-        //tvNearestStation.setText(msg);
-        // You can now create a LatLng Object for use with maps
-        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        Log.d("onLocChanged(): ", "ATTEMPT");
-        // attempt closest station
+
+        // Optional, a LatLng object
+        // LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
 
         new NearestStation(location.getLatitude(), location.getLongitude()).execute();
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.act_main_btn_go:
+                startActivity(new Intent(this, TripActivity.class));
+                break;
+            case R.id.act_main_btn_test:
+                //startActivity(new Intent(getApplicationContext(), Stations2Activity.class));
+                Intent stationIntent = new Intent(getApplicationContext(), Stations2Activity.class);
+                startActivityForResult(stationIntent, REQUEST_PICK_STATION);
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
     private class NearestStation extends AsyncTask<Void, Void, StationLocation> {
 
-        List<StationLocation> mList;
-        double mCurrentLat;
-        double mCurrentLng;
+        private double mCurrentLat;
+        private double mCurrentLng;
 
         public NearestStation(double currentLat, double currentLng) {
             mCurrentLat = currentLat;
@@ -230,31 +228,12 @@ public class FormActivity extends AppCompatActivity
                 response = call.execute().body();
             } catch (IOException e) {
                 e.printStackTrace();
-            } finally {
                 call.cancel();
+            } finally {
             }
 
             result = response != null ? response.getData() : null;
-
-            mList = result;
-
-            // new meth
-            Hashtable<StationLocation, Double> distances = new Hashtable<>();
-
-            for (StationLocation s : mList) {
-                double distance = pythagoreanTheorem(s.getStopLat() - mCurrentLat, s.getStopLon() - mCurrentLng);
-                distances.put(s, distance);
-            }
-
-            Pair<StationLocation, Double> closest = new Pair<>(new StationLocation(), 9999999999.99);
-            Iterator<Map.Entry<StationLocation, Double>> it = distances.entrySet().iterator();
-            while (it.hasNext()) {
-                Map.Entry<StationLocation, Double> entry = it.next();
-                if (entry.getValue() < closest.second) {
-                    closest = new Pair<>(entry.getKey(), entry.getValue());
-                }
-            }
-            return closest.first;
+            return LocationMath.nearest(result, mCurrentLat, mCurrentLng);
         }
 
         @Override

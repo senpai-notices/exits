@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.TextView;
 
 import org.alextan.android.exits.R;
 import org.alextan.android.exits.adapter.StationAdapter;
@@ -23,8 +22,6 @@ import retrofit2.Call;
 
 public class Stations2Activity extends AppCompatActivity {
 
-    TextView mTv;
-    ArrayList<StationLocation> mList;
     private RecyclerView mStationRecyclerView;
     private StationAdapter mStationAdapter;
 
@@ -46,6 +43,7 @@ public class Stations2Activity extends AppCompatActivity {
                 response = call.execute().body();
             } catch (IOException e) {
                 e.printStackTrace();
+                call.cancel();
             }
 
             ArrayList<StationLocation> result = response != null ? (ArrayList<StationLocation>) response.getData() : null;

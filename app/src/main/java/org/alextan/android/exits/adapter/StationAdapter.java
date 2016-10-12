@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
@@ -65,6 +66,7 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.ViewHold
         @Override
         public void onClick(View v) {
             // send station back to form.
+            Toast.makeText(mContext, mItem.getStopName(), Toast.LENGTH_SHORT).show();
         }
 
         public void setItem(StationLocation item) {

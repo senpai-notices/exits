@@ -10,7 +10,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -45,7 +44,7 @@ public class SplashActivity extends AppCompatActivity implements View.OnClickLis
         view = v;
 
         int id = v.getId();
-        switch (id){
+        switch (id) {
             case R.id.btn_check:
                 if (checkPermission()) {
 
@@ -68,7 +67,6 @@ public class SplashActivity extends AppCompatActivity implements View.OnClickLis
                 }
                 break;
             case R.id.btn_start:
-                Log.d("TAG", "lcicked");
                 startActivity(new Intent(getApplicationContext(), FormActivity.class));
                 break;
         }
