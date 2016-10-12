@@ -20,11 +20,6 @@
             android:label="@string/title_activity_history"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity
-            android:name=".activity.TripActivity"
-            android:label="@string/title_activity_trip"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
         <activity android:name=".activity.SettingsActivity">
         </activity>
         <activity android:name=".activity.Stations2Activity">
@@ -49,6 +44,9 @@
         <meta-data
             android:name="DOMAIN_PACKAGE_NAME"
             android:value="org.alextan.android.exits.model.local"/>
+
+        <activity android:name=".activity.TripActivity">
+        </activity>
     </application>
 
 </manifest>

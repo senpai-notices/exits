@@ -1,6 +1,8 @@
 package org.alextan.android.exits.adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,10 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
+import org.alextan.android.exits.Constants;
 import org.alextan.android.exits.R;
 import org.alextan.android.exits.model.StationLocation;
 
@@ -66,7 +68,11 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.ViewHold
         @Override
         public void onClick(View v) {
             // send station back to form.
-            Toast.makeText(mContext, mItem.getStopName(), Toast.LENGTH_SHORT).show();
+            // Toast.makeText(mContext, mItem.getStopName(), Toast.LENGTH_SHORT).show();
+            Intent returnIntent = new Intent();
+            returnIntent.putExtra(Constants.KEY_STATION_NAME, mItem.getStopName());
+            ((Activity) mContext).setResult(Activity.RESULT_OK, returnIntent);
+            ((Activity) mContext).finish();
         }
 
         public void setItem(StationLocation item) {

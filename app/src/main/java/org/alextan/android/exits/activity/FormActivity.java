@@ -1,6 +1,7 @@
 package org.alextan.android.exits.activity;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -28,6 +29,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 
+import org.alextan.android.exits.Constants;
 import org.alextan.android.exits.R;
 import org.alextan.android.exits.model.DreamFactoryResource;
 import org.alextan.android.exits.model.StationLocation;
@@ -193,7 +195,6 @@ public class FormActivity extends AppCompatActivity
                 startActivity(new Intent(this, TripActivity.class));
                 break;
             case R.id.act_main_btn_test:
-                //startActivity(new Intent(getApplicationContext(), Stations2Activity.class));
                 Intent stationIntent = new Intent(getApplicationContext(), Stations2Activity.class);
                 startActivityForResult(stationIntent, REQUEST_PICK_STATION);
                 break;
@@ -204,7 +205,12 @@ public class FormActivity extends AppCompatActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_PICK_STATION) {
+            if (resultCode == Activity.RESULT_OK) {
+                String result = data.getStringExtra(Constants.KEY_STATION_NAME);
+                Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private class NearestStation extends AsyncTask<Void, Void, StationLocation> {
