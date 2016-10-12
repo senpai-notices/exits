@@ -10,7 +10,7 @@ import android.view.View;
 import org.alextan.android.exits.R;
 
 /**
- * User sees their preferred route, according to their inputs in MainActivity.
+ * User sees their preferred route, according to their inputs in FormActivity.
  */
 public class TripActivity extends AppCompatActivity {
 

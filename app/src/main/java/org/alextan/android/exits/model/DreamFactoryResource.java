@@ -4,10 +4,10 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class DreamFactoryJsonResponse<T> {
+public class DreamFactoryResource<T> {
     @SerializedName("resource") private List<T> data;
 
-    public DreamFactoryJsonResponse(List<T> data) {
+    public DreamFactoryResource(List<T> data) {
         this.data = data;
     }
 

@@ -2,7 +2,7 @@ package org.alextan.android.exits.util;
 
 import android.util.Pair;
 
-import org.alextan.android.exits.model.DreamFactoryJsonResponse;
+import org.alextan.android.exits.model.DreamFactoryResource;
 import org.alextan.android.exits.model.StationLocation;
 import org.alextan.android.exits.service.GtfsService;
 
@@ -24,8 +24,8 @@ public class GetNearestStation {
         List<StationLocation> result = new LinkedList<>();
 
         GtfsService gtfsService = GtfsService.retrofit.create(GtfsService.class);
-        Call<DreamFactoryJsonResponse<StationLocation>> call = gtfsService.getAllStationLocations();
-        DreamFactoryJsonResponse<StationLocation> response = null;
+        Call<DreamFactoryResource<StationLocation>> call = gtfsService.getAllStationLocations();
+        DreamFactoryResource<StationLocation> response = null;
         try {
             response = call.execute().body();
         } catch (IOException e) {

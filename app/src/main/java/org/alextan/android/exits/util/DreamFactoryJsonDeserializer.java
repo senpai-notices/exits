@@ -8,13 +8,13 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
-import org.alextan.android.exits.model.DreamFactoryJsonResponse;
+import org.alextan.android.exits.model.DreamFactoryResource;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DreamFactoryJsonDeserializer<T> implements JsonDeserializer<DreamFactoryJsonResponse<T>> {
+public class DreamFactoryJsonDeserializer<T> implements JsonDeserializer<DreamFactoryResource<T>> {
 
     private final Class<T> clazz;
 
@@ -23,7 +23,7 @@ public class DreamFactoryJsonDeserializer<T> implements JsonDeserializer<DreamFa
     }
 
     @Override
-    public DreamFactoryJsonResponse<T> deserialize(JsonElement json, Type type, JsonDeserializationContext context) throws JsonParseException {
+    public DreamFactoryResource<T> deserialize(JsonElement json, Type type, JsonDeserializationContext context) throws JsonParseException {
         JsonObject jsonObject = json.getAsJsonObject();
         JsonArray jsonArray = jsonObject.entrySet().iterator().next().getValue().getAsJsonArray();
         List<T> list = new ArrayList<>();
@@ -32,6 +32,6 @@ public class DreamFactoryJsonDeserializer<T> implements JsonDeserializer<DreamFa
             T obj = gson.fromJson(element, clazz);
             list.add(obj);
         }
-        return new DreamFactoryJsonResponse<>(list);
+        return new DreamFactoryResource<>(list);
     }
 }

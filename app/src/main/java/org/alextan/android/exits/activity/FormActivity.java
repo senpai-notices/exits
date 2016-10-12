@@ -30,7 +30,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.alextan.android.exits.R;
-import org.alextan.android.exits.model.DreamFactoryJsonResponse;
+import org.alextan.android.exits.model.DreamFactoryResource;
 import org.alextan.android.exits.model.StationLocation;
 import org.alextan.android.exits.service.GtfsService;
 
@@ -52,7 +52,7 @@ import static org.alextan.android.exits.util.GetNearestStation.pythagoreanTheore
  * Automatically fetches nearest train station.
  * User inputs destination station and exit.
  */
-public class MainActivity extends AppCompatActivity
+public class FormActivity extends AppCompatActivity
         implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
 
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_form);
 
         initialiseLocationServices();
         initialiseUi();
@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity
         mBtnTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), StationsActivity.class);
+                Intent intent = new Intent(getApplicationContext(), Stations2Activity.class);
                 startActivity(intent);
             }
         });
@@ -199,17 +199,13 @@ public class MainActivity extends AppCompatActivity
                 Double.toString(location.getLatitude()) + "," +
                 Double.toString(location.getLongitude());
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-        tvNearestStation.setText(msg);
+        //tvNearestStation.setText(msg);
         // You can now create a LatLng Object for use with maps
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
         Log.d("onLocChanged(): ", "ATTEMPT");
         // attempt closest station
 
         new NearestStation(location.getLatitude(), location.getLongitude()).execute();
-        // network tasks need to be async
-/*        GetNearestStation.fetch();
-        StationLocation nearestStation = GetNearestStation.findNearest(-33.8943302,150.9350306);
-        tvNearestStation.setText(nearestStation.getStopName());*/
     }
 
     private class NearestStation extends AsyncTask<Void, Void, StationLocation> {
@@ -228,8 +224,8 @@ public class MainActivity extends AppCompatActivity
             List<StationLocation> result;
 
             GtfsService gtfsService = GtfsService.retrofit.create(GtfsService.class);
-            Call<DreamFactoryJsonResponse<StationLocation>> call = gtfsService.getAllStationLocations();
-            DreamFactoryJsonResponse<StationLocation> response = null;
+            Call<DreamFactoryResource<StationLocation>> call = gtfsService.getAllStationLocations();
+            DreamFactoryResource<StationLocation> response = null;
             try {
                 response = call.execute().body();
             } catch (IOException e) {

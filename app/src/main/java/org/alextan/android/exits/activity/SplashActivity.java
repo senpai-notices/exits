@@ -69,7 +69,7 @@ public class SplashActivity extends AppCompatActivity implements View.OnClickLis
                 break;
             case R.id.btn_start:
                 Log.d("TAG", "lcicked");
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                startActivity(new Intent(getApplicationContext(), FormActivity.class));
                 break;
         }
     }
