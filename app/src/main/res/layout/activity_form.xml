@@ -55,8 +55,20 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="test get stations"
+        android:text="Find station"
         android:id="@+id/act_main_btn_test"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Destination"
+        android:id="@+id/act_form_tv_destination"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="check origin and dest are not null"
+        android:id="@+id/act_form_test_a_to_b"/>
 
     <Space
         android:layout_width="wrap_content"

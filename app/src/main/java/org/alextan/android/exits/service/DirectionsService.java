@@ -1,5 +1,6 @@
 package org.alextan.android.exits.service;
 
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -17,24 +18,25 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
-public interface GtfsService {
-    String URL = "***REMOVED***";
-    String API_KEY_KEY = "X-DreamFactory-Api-Key";
-    String API_KEY_VALUE = "***REMOVED***";
-    String API_KEY_HEADER = API_KEY_KEY + ": " + API_KEY_VALUE;
+public interface DirectionsService {
+    String PARAM_KEY_API_KEY = "key";
+    String PARAM_VALUE_API_KEY = "***REMOVED***";
+    String PARAM_KEY_ORIGIN = "origin";
+    String PARAM_KEY_DESTINATION = "destination";
+    String PARAM_KEY_MODE = "mode";
+    String PARAM_VALUE_MODE = "transit";
+    String PARAM_KEY_TRANSIT_MODE = "transit_mode";
+    String PARAM_VALUE_TRANSIT_MODE = "train";
+    String URL = "https://maps.googleapis.com/maps/api/directions/json?"
+            +PARAM_KEY_API_KEY+"="+PARAM_VALUE_API_KEY+"&"
+            +PARAM_KEY_MODE+"="+PARAM_VALUE_MODE+"&"
+            +PARAM_KEY_TRANSIT_MODE+"="+PARAM_VALUE_TRANSIT_MODE;
 
-    @Headers(API_KEY_HEADER)
-    @GET("/api/v2/gtfs/_table/stations")
-    Call<DreamFactoryResource<Station>> getAllStations();
 
-    @Headers(API_KEY_HEADER)
-    @GET("/api/v2/gtfs/_table/train_parent_stops")
-    Call<DreamFactoryResource<StationLocation>> getAllStationLocations();
-
-    @Headers(API_KEY_HEADER)
-    @GET("/api/v2/gtfs/_table/train_parent_stops/{index}")
-    Call<StationLocation> getStation(@Path("index") int index);
+    @GET()
+    Call<Object> getDirection(@Query("origin") String origin, @Query("destination") String destination);
 
     Type stationResourceType = new TypeToken<DreamFactoryResource<Station>>(){}.getType();
     Type stationLocationResourceType = new TypeToken<DreamFactoryResource<StationLocation>>(){}.getType();
@@ -47,5 +49,4 @@ public interface GtfsService {
             .baseUrl(URL)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build();
-
 }

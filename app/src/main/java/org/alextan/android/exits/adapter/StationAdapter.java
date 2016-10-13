@@ -67,10 +67,8 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.ViewHold
 
         @Override
         public void onClick(View v) {
-            // send station back to form.
-            // Toast.makeText(mContext, mItem.getStopName(), Toast.LENGTH_SHORT).show();
             Intent returnIntent = new Intent();
-            returnIntent.putExtra(Constants.KEY_STATION_NAME, mItem.getStopName());
+            returnIntent.putExtra(Constants.KEY_STATION_INDEX, mItem.getStopIndex());
             ((Activity) mContext).setResult(Activity.RESULT_OK, returnIntent);
             ((Activity) mContext).finish();
         }

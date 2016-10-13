@@ -29,10 +29,10 @@ public class Stations2Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stations2);
-        new Hello().execute();
+        new FetchStationsAsync().execute();
     }
 
-    private class Hello extends AsyncTask<Void, Void, ArrayList<StationLocation>> {
+    private class FetchStationsAsync extends AsyncTask<Void, Void, ArrayList<StationLocation>> {
 
         @Override
         protected ArrayList<StationLocation> doInBackground(Void... params) {

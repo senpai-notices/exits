@@ -37,6 +37,7 @@ import org.alextan.android.exits.service.GtfsService;
 import org.alextan.android.exits.util.LocationMath;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -60,6 +61,13 @@ public class FormActivity extends AppCompatActivity
     TextView tvNearestStation;
     @BindView(R.id.sp_station_exits)
     Spinner mSpinnerStationExits;
+    @BindView(R.id.act_form_tv_destination)
+    TextView tvDestination;
+    @BindView(R.id.act_form_test_a_to_b)
+    Button mBtnTestAB;
+
+    private StationLocation mOriginStation;
+    private StationLocation mDestinationStation;
 
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
@@ -113,6 +121,7 @@ public class FormActivity extends AppCompatActivity
         mSpinnerStationExits.setAdapter(adapter);
         mBtnGo.setOnClickListener(this);
         mBtnTest.setOnClickListener(this);
+        mBtnTestAB.setOnClickListener(this);
 
     }
 
@@ -197,6 +206,14 @@ public class FormActivity extends AppCompatActivity
                 Intent stationIntent = new Intent(getApplicationContext(), Stations2Activity.class);
                 startActivityForResult(stationIntent, REQUEST_PICK_STATION);
                 break;
+            case R.id.act_form_test_a_to_b:
+                String msg = "";
+                if (mDestinationStation == null) msg += "dest is null. ";
+                else msg+= mDestinationStation.getStopName();
+                if (mOriginStation == null) msg += "orign is null. ";
+                else msg+= mOriginStation.getStopName();
+                Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+                break;
             default:
                 break;
         }
@@ -206,8 +223,8 @@ public class FormActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_PICK_STATION) {
             if (resultCode == Activity.RESULT_OK) {
-                String result = data.getStringExtra(Constants.KEY_STATION_NAME);
-                Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
+                int destinationIndex = data.getIntExtra(Constants.KEY_STATION_INDEX, -1);
+                new FetchStationAsync(destinationIndex).execute();
             }
         }
     }
@@ -244,6 +261,7 @@ public class FormActivity extends AppCompatActivity
         @Override
         protected void onPostExecute(StationLocation result) {
             tvNearestStation.setText(result.getStopName());
+            mOriginStation = result;
         }
 
     }
@@ -276,6 +294,44 @@ public class FormActivity extends AppCompatActivity
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+    }
+
+    private class FetchStationAsync extends AsyncTask<Void, Void, StationLocation> {
+
+        private int mStaIndex;
+
+        public FetchStationAsync(int stationIndex) {
+            mStaIndex = stationIndex;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            if (mStaIndex < 0) {
+                Log.e("FetchStationAsync", "Invalid index");
+                return;
+            }
+        }
+
+        @Override
+        protected StationLocation doInBackground(Void... params) {
+            GtfsService gtfsService = GtfsService.retrofit.create(GtfsService.class);
+            Call<StationLocation> call = gtfsService.getStation(mStaIndex);
+            StationLocation response = null;
+            try {
+                response = call.execute().body();
+            } catch (IOException e) {
+                e.printStackTrace();
+                call.cancel();
+            }
+
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(StationLocation result) {
+            tvDestination.setText(result.getStopName());
+            mDestinationStation = result;
+        }
     }
 
 }
