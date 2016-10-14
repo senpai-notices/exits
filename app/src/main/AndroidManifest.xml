@@ -25,11 +25,7 @@
         <activity android:name=".activity.StationsActivity">
         </activity>
         <activity android:name=".activity.SplashActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
 
         <meta-data
@@ -47,6 +43,15 @@
 
         <activity android:name=".activity.TripActivity">
         </activity>
+        <activity android:name=".activity.TestActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        
+        <service android:name=".service.GeolocationService"/>
     </application>
 
 </manifest>
