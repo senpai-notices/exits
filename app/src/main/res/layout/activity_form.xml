@@ -35,7 +35,7 @@
             android:tint="@color/colorAccent"/>
 
         <TextView
-            android:id="@+id/act_main_tv_nearest_station"
+            android:id="@+id/act_form_tv_nearest_station"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Some station"
@@ -56,7 +56,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Find station"
-        android:id="@+id/act_main_btn_test"/>
+        android:id="@+id/act_form_btn_test"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -88,7 +88,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/lbl_btn_complete"
-        android:id="@+id/act_main_btn_go"/>
+        android:id="@+id/act_form_btn_go"/>
 
 
 </LinearLayout>

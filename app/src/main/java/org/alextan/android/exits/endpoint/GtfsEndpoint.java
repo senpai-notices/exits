@@ -1,4 +1,4 @@
-package org.alextan.android.exits.service;
+package org.alextan.android.exits.endpoint;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -7,7 +7,7 @@ import com.google.gson.reflect.TypeToken;
 import org.alextan.android.exits.model.DreamFactoryResource;
 import org.alextan.android.exits.model.Station;
 import org.alextan.android.exits.model.StationLocation;
-import org.alextan.android.exits.util.DreamFactoryJsonDeserializer;
+import org.alextan.android.exits.deserialiser.DreamFactoryJsonDeserialiser;
 
 import java.lang.reflect.Type;
 
@@ -18,7 +18,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.Path;
 
-public interface GtfsService {
+public interface GtfsEndpoint {
     String URL = "***REMOVED***";
     String API_KEY_KEY = "X-DreamFactory-Api-Key";
     String API_KEY_VALUE = "***REMOVED***";
@@ -40,8 +40,8 @@ public interface GtfsService {
     Type stationLocationResourceType = new TypeToken<DreamFactoryResource<StationLocation>>(){}.getType();
 
     Gson gson = new GsonBuilder()
-            .registerTypeAdapter(stationResourceType, new DreamFactoryJsonDeserializer<>(Station.class))
-            .registerTypeAdapter(stationLocationResourceType, new DreamFactoryJsonDeserializer<>(StationLocation.class))
+            .registerTypeAdapter(stationResourceType, new DreamFactoryJsonDeserialiser<>(Station.class))
+            .registerTypeAdapter(stationLocationResourceType, new DreamFactoryJsonDeserialiser<>(StationLocation.class))
             .create();
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(URL)

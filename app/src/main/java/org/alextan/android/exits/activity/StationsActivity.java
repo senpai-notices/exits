@@ -11,7 +11,7 @@ import org.alextan.android.exits.R;
 import org.alextan.android.exits.adapter.StationAdapter;
 import org.alextan.android.exits.model.DreamFactoryResource;
 import org.alextan.android.exits.model.StationLocation;
-import org.alextan.android.exits.service.GtfsService;
+import org.alextan.android.exits.endpoint.GtfsEndpoint;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ import java.util.Comparator;
 
 import retrofit2.Call;
 
-public class Stations2Activity extends AppCompatActivity {
+public class StationsActivity extends AppCompatActivity {
 
     private RecyclerView mStationRecyclerView;
     private StationAdapter mStationAdapter;
@@ -28,7 +28,7 @@ public class Stations2Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_stations2);
+        setContentView(R.layout.activity_stations);
         new FetchStationsAsync().execute();
     }
 
@@ -36,8 +36,8 @@ public class Stations2Activity extends AppCompatActivity {
 
         @Override
         protected ArrayList<StationLocation> doInBackground(Void... params) {
-            GtfsService gtfsService = GtfsService.retrofit.create(GtfsService.class);
-            Call<DreamFactoryResource<StationLocation>> call = gtfsService.getAllStationLocations();
+            GtfsEndpoint gtfsEndpoint = GtfsEndpoint.retrofit.create(GtfsEndpoint.class);
+            Call<DreamFactoryResource<StationLocation>> call = gtfsEndpoint.getAllStationLocations();
             DreamFactoryResource<StationLocation> response = null;
             try {
                 response = call.execute().body();
@@ -60,9 +60,9 @@ public class Stations2Activity extends AppCompatActivity {
                 }
             });
             mStationRecyclerView = (RecyclerView) findViewById(R.id.rv);
-            mStationAdapter = new StationAdapter(Stations2Activity.this, result);
+            mStationAdapter = new StationAdapter(StationsActivity.this, result);
             mStationRecyclerView.setHasFixedSize(true);
-            mStationRecyclerView.setLayoutManager(new LinearLayoutManager(Stations2Activity.this));
+            mStationRecyclerView.setLayoutManager(new LinearLayoutManager(StationsActivity.this));
             mStationRecyclerView.setItemAnimator(new DefaultItemAnimator());
             mStationRecyclerView.setAdapter(mStationAdapter);
         }

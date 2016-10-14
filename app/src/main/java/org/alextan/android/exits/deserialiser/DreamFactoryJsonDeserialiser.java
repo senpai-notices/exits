@@ -1,4 +1,4 @@
-package org.alextan.android.exits.util;
+package org.alextan.android.exits.deserialiser;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -14,11 +14,11 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DreamFactoryJsonDeserializer<T> implements JsonDeserializer<DreamFactoryResource<T>> {
+public class DreamFactoryJsonDeserialiser<T> implements JsonDeserializer<DreamFactoryResource<T>> {
 
     private final Class<T> clazz;
 
-    public DreamFactoryJsonDeserializer(Class<T> clazz) {
+    public DreamFactoryJsonDeserialiser(Class<T> clazz) {
         this.clazz = clazz;
     }
 

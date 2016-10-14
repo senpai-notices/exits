@@ -22,7 +22,7 @@
         </activity>
         <activity android:name=".activity.SettingsActivity">
         </activity>
-        <activity android:name=".activity.Stations2Activity">
+        <activity android:name=".activity.StationsActivity">
         </activity>
         <activity android:name=".activity.SplashActivity">
             <intent-filter>

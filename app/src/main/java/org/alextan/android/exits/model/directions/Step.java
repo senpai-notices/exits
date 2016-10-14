@@ -1,21 +1,19 @@
 package org.alextan.android.exits.model.directions;
 
-import com.google.gson.annotations.SerializedName;
-
 public class Step {
 
-    @SerializedName("name")
     private String mArrivalStop;
-    @SerializedName("text")
     private String mArrivalTime;
-    @SerializedName("name")
     private String mDepartureStop;
-    @SerializedName("text")
     private String mDepartureTime;
-    @SerializedName("name")
     private String mLine;
 
-    public Step() {
+    public Step(String arrivalStop, String arrivalTime, String departureStop, String departureTime, String line) {
+        mArrivalStop = arrivalStop;
+        mArrivalTime = arrivalTime;
+        mDepartureStop = departureStop;
+        mDepartureTime = departureTime;
+        mLine = line;
     }
 
     public String getArrivalStop() {

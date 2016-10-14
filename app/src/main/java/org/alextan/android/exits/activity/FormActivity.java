@@ -33,7 +33,9 @@ import org.alextan.android.exits.Constants;
 import org.alextan.android.exits.R;
 import org.alextan.android.exits.model.DreamFactoryResource;
 import org.alextan.android.exits.model.StationLocation;
-import org.alextan.android.exits.service.GtfsService;
+import org.alextan.android.exits.model.directions.Step;
+import org.alextan.android.exits.endpoint.DirectionsEndpoint;
+import org.alextan.android.exits.endpoint.GtfsEndpoint;
 import org.alextan.android.exits.util.LocationMath;
 
 import java.io.IOException;
@@ -42,6 +44,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
+
+import static org.alextan.android.exits.util.TrainUtil.isSydneyTrainsLine;
 
 /**
  * The first activity of the app.
@@ -52,11 +56,11 @@ public class FormActivity extends AppCompatActivity
         implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
         LocationListener, View.OnClickListener {
 
-    @BindView(R.id.act_main_btn_go)
+    @BindView(R.id.act_form_btn_go)
     Button mBtnGo;
-    @BindView(R.id.act_main_btn_test)
+    @BindView(R.id.act_form_btn_test)
     Button mBtnTest;
-    @BindView(R.id.act_main_tv_nearest_station)
+    @BindView(R.id.act_form_tv_nearest_station)
     TextView tvNearestStation;
     @BindView(R.id.sp_station_exits)
     Spinner mSpinnerStationExits;
@@ -198,18 +202,20 @@ public class FormActivity extends AppCompatActivity
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.act_main_btn_go:
-                startActivity(new Intent(this, TripActivity.class));
+            case R.id.act_form_btn_go:
+                //startActivity(new Intent(this, TripActivity.class));
+                Log.d("goBtn", "onClick");
+                new TestDirections().execute();
                 break;
-            case R.id.act_main_btn_test:
-                Intent stationIntent = new Intent(getApplicationContext(), Stations2Activity.class);
+            case R.id.act_form_btn_test:
+                Intent stationIntent = new Intent(getApplicationContext(), StationsActivity.class);
                 startActivityForResult(stationIntent, REQUEST_PICK_STATION);
                 break;
             case R.id.act_form_test_a_to_b:
                 String msg = "";
                 if (mDestinationStation == null) msg += "dest is null. ";
                 else msg+= mDestinationStation.getStopName();
-                if (mOriginStation == null) msg += "orign is null. ";
+                if (mOriginStation == null) msg += "origin is null. ";
                 else msg+= mOriginStation.getStopName();
                 Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
                 break;
@@ -242,8 +248,8 @@ public class FormActivity extends AppCompatActivity
         protected StationLocation doInBackground(Void... params) {
             List<StationLocation> result;
 
-            GtfsService gtfsService = GtfsService.retrofit.create(GtfsService.class);
-            Call<DreamFactoryResource<StationLocation>> call = gtfsService.getAllStationLocations();
+            GtfsEndpoint gtfsEndpoint = GtfsEndpoint.retrofit.create(GtfsEndpoint.class);
+            Call<DreamFactoryResource<StationLocation>> call = gtfsEndpoint.getAllStationLocations();
             DreamFactoryResource<StationLocation> response = null;
             try {
                 response = call.execute().body();
@@ -313,8 +319,8 @@ public class FormActivity extends AppCompatActivity
 
         @Override
         protected StationLocation doInBackground(Void... params) {
-            GtfsService gtfsService = GtfsService.retrofit.create(GtfsService.class);
-            Call<StationLocation> call = gtfsService.getStation(mStaIndex);
+            GtfsEndpoint gtfsEndpoint = GtfsEndpoint.retrofit.create(GtfsEndpoint.class);
+            Call<StationLocation> call = gtfsEndpoint.getStation(mStaIndex);
             StationLocation response = null;
             try {
                 response = call.execute().body();
@@ -333,4 +339,37 @@ public class FormActivity extends AppCompatActivity
         }
     }
 
+    private class TestDirections extends AsyncTask<Void, Void, List<Step>> {
+
+        @Override
+        protected List<Step> doInBackground(Void... params) {
+            DirectionsEndpoint directionsEndpoint = DirectionsEndpoint.retrofit.create(DirectionsEndpoint.class);
+            Call<List<Step>> call = directionsEndpoint.getDirection(
+                    (mOriginStation.getStopLat() + "," + mOriginStation.getStopLon()),
+                    (mDestinationStation.getStopLat() + "," + mDestinationStation.getStopLon())
+            );
+            List<Step> response = null;
+            try {
+                response = call.execute().body();
+            } catch (IOException e) {
+                e.printStackTrace();
+                call.cancel();
+            }
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(List<Step> result) {
+            Log.d("testdirections", "onPostExecute()");
+            if (result.size() == 0) {
+                Log.d("onPostExecute()", "Empty transitSteps! Should display error message. Also try to prevent selecting duplicate station.");
+            }
+            for (Step step : result) {
+                Log.d("testdirections", step.getDepartureStop() + "->" + step.getArrivalStop());
+                if (!isSydneyTrainsLine(step.getLine(), FormActivity.this)) {
+                    Log.d("onPostExecute()", "Non-Sydney Trains line detected. Should display error message.");
+                }
+            }
+        }
+    }
 }
