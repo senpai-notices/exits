@@ -37,7 +37,6 @@ import org.alextan.android.exits.service.GtfsService;
 import org.alextan.android.exits.util.LocationMath;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
