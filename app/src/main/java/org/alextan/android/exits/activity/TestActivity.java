@@ -34,6 +34,17 @@ public class TestActivity extends AppCompatActivity {
     private BroadcastReceiver broadcastReceiver;
 
     @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_test);
+        ButterKnife.bind(this);
+
+        if(!runtimePermissions()) {
+            enableButtons();
+        }
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         if (broadcastReceiver == null) {
@@ -67,23 +78,6 @@ public class TestActivity extends AppCompatActivity {
         if (broadcastReceiver != null) {
             unregisterReceiver(broadcastReceiver);
         }
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_test);
-        ButterKnife.bind(this);
-
-        if(!runtimePermissions()) {
-            enableButtons();
-        }
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
     }
 
     private void enableButtons() {
