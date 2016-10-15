@@ -14,15 +14,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.model.LatLng;
+
+import org.alextan.android.exits.Constants;
 import org.alextan.android.exits.R;
-import org.alextan.android.exits.service.GeolocationService;
+import org.alextan.android.exits.service.Geolocation2Service;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class TestActivity extends AppCompatActivity {
 
-    public static final int REQUEST_LOCATION_PERMISSION = 100;
     @BindView(R.id.test_start)
     Button start;
     @BindView(R.id.test_stop)
@@ -38,11 +40,25 @@ public class TestActivity extends AppCompatActivity {
             broadcastReceiver = new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
-                    title.append("\n" + intent.getExtras().get("coordinates"));
+                    Bundle b = intent.getExtras();
+
+                    if (b.getParcelable(Constants.EXTRA_CURRENT_LATLNG) != null) {
+                        LatLng l = b.getParcelable(Constants.EXTRA_CURRENT_LATLNG);
+                        title.append("\n" + l.toString());
+                    }
                 }
             };
         }
-        registerReceiver(broadcastReceiver, new IntentFilter("location_update"));
+
+        registerReceiver(broadcastReceiver, new IntentFilter(Constants.ACTION_LOCATION_UPDATE));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (broadcastReceiver != null) {
+            unregisterReceiver(broadcastReceiver);
+        }
     }
 
     @Override
@@ -64,18 +80,24 @@ public class TestActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+    }
+
     private void enableButtons() {
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), GeolocationService.class);
+                Intent i = new Intent(getApplicationContext(), Geolocation2Service.class);
                 startService(i);
             }
         });
         stop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), GeolocationService.class);
+                Intent i = new Intent(getApplicationContext(), Geolocation2Service.class);
                 stopService(i);
             }
         });
@@ -90,18 +112,17 @@ public class TestActivity extends AppCompatActivity {
                             android.Manifest.permission.ACCESS_FINE_LOCATION,
                             android.Manifest.permission.ACCESS_COARSE_LOCATION
                     }
-                    , REQUEST_LOCATION_PERMISSION);
+                    , Constants.REQUEST_LOCATION_PERMISSION);
 
             return true;
         }
-            return false;
-
+        return false;
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(requestCode == REQUEST_LOCATION_PERMISSION) {
+        if(requestCode == Constants.REQUEST_LOCATION_PERMISSION) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                 enableButtons();
             } else {

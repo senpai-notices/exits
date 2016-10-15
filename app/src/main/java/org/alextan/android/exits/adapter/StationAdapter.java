@@ -68,7 +68,7 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.ViewHold
         @Override
         public void onClick(View v) {
             Intent returnIntent = new Intent();
-            returnIntent.putExtra(Constants.KEY_STATION_INDEX, mItem.getStopIndex());
+            returnIntent.putExtra(Constants.EXTRA_STATION_INDEX, mItem.getStopIndex());
             ((Activity) mContext).setResult(Activity.RESULT_OK, returnIntent);
             ((Activity) mContext).finish();
         }
