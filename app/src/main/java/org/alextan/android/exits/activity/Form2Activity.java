@@ -1,15 +1,17 @@
 package org.alextan.android.exits.activity;
 
-import android.Manifest;
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -22,11 +24,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.alextan.android.exits.Constants;
@@ -36,6 +33,7 @@ import org.alextan.android.exits.endpoint.GtfsEndpoint;
 import org.alextan.android.exits.model.DreamFactoryResource;
 import org.alextan.android.exits.model.StationLocation;
 import org.alextan.android.exits.model.directions.Step;
+import org.alextan.android.exits.service.GeolocationService;
 import org.alextan.android.exits.util.LocationMath;
 
 import java.io.IOException;
@@ -52,9 +50,7 @@ import static org.alextan.android.exits.util.TrainUtil.isSydneyTrainsLine;
  * Automatically fetches nearest train station.
  * User inputs destination station and exit.
  */
-public class Form2Activity extends AppCompatActivity
-        implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
-        LocationListener, View.OnClickListener {
+public class Form2Activity extends AppCompatActivity implements View.OnClickListener {
 
     @BindView(R.id.act_form_btn_go)
     Button mBtnGo;
@@ -69,14 +65,11 @@ public class Form2Activity extends AppCompatActivity
     @BindView(R.id.act_form_test_a_to_b)
     Button mBtnTestAB;
 
+    private BroadcastReceiver mGeoBroadcastReceiver;
+    private BroadcastReceiver mGeoStatusBroadcastReceiver;
+
     private StationLocation mOriginStation;
     private StationLocation mDestinationStation;
-
-    private GoogleApiClient mGoogleApiClient;
-    private LocationRequest mLocationRequest;
-
-    private long UPDATE_INTERVAL = 10 * 1000;
-    private long FASTEST_INTERVAL = 2000;
 
     static final int REQUEST_PICK_STATION = 11;
 
@@ -85,31 +78,12 @@ public class Form2Activity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form);
 
-        initialiseLocationServices();
         initialiseUi();
-    }
 
-    private void initialiseLocationServices() {
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addApi(LocationServices.API)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this).build();
-    }
-
-    @Override
-    protected void onStop() {
-        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
-
-        if (mGoogleApiClient != null) {
-            mGoogleApiClient.disconnect();
+        if(!runtimePermissions()) {
+            Intent i = new Intent(getApplicationContext(), GeolocationService.class);
+            startService(i);
         }
-        super.onStop();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        mGoogleApiClient.connect();
     }
 
     private void initialiseUi() {
@@ -126,6 +100,130 @@ public class Form2Activity extends AppCompatActivity
         mBtnTest.setOnClickListener(this);
         mBtnTestAB.setOnClickListener(this);
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (isServiceRunning(GeolocationService.class)) {
+            stopService(new Intent(getApplicationContext(), GeolocationService.class));
+            startService(new Intent(getApplicationContext(), GeolocationService.class));
+        } else {
+            startService(new Intent(getApplicationContext(), GeolocationService.class));
+        }
+
+        if (mGeoBroadcastReceiver == null) {
+            mGeoBroadcastReceiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    Bundle bundle = intent.getExtras();
+
+                    if (bundle.getParcelable(Constants.EXTRA_CURRENT_LATLNG) != null) {
+                        LatLng currentPosition = bundle.getParcelable(Constants.EXTRA_CURRENT_LATLNG);
+
+                        String msg = "Updated Location: " +
+                                Double.toString(currentPosition.latitude) + "," +
+                                Double.toString(currentPosition.longitude);
+                        Toast.makeText(Form2Activity.this, msg, Toast.LENGTH_SHORT).show();
+
+                        new FetchNearestStationTask(currentPosition).execute();
+                    }
+                }
+            };
+        }
+        registerReceiver(mGeoBroadcastReceiver, new IntentFilter(Constants.ACTION_LOCATION_UPDATE));
+
+        if (mGeoStatusBroadcastReceiver == null) {
+            mGeoStatusBroadcastReceiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    Bundle bundle = intent.getExtras();
+
+                    if (bundle != null) {
+                        if (bundle.containsKey(Constants.EXTRA_LOCATION_DISCONNECTED)) {
+                            Toast.makeText(Form2Activity.this,
+                                    R.string.error_msg_location_disconnected, Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+                        if (bundle.containsKey(Constants.EXTRA_NETWORK_LOST)) {
+                            Toast.makeText(Form2Activity.this, R.string.error_msg_network_lost,
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                        if (bundle.containsKey(Constants.EXTRA_CONN_FAILED)) {
+                            Toast.makeText(Form2Activity.this, "Error: "
+                                    + bundle.getString(Constants.EXTRA_CONN_FAILED),
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+            };
+        }
+        registerReceiver(mGeoStatusBroadcastReceiver, new IntentFilter(Constants.ACTION_GEO_STATUS));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mGeoBroadcastReceiver != null) {
+            unregisterReceiver(mGeoBroadcastReceiver);
+        }
+        if (mGeoStatusBroadcastReceiver != null) {
+            unregisterReceiver(mGeoStatusBroadcastReceiver);
+        }
+
+        if (isServiceRunning(GeolocationService.class)) {
+            stopService(new Intent(getApplicationContext(), GeolocationService.class));
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mGeoBroadcastReceiver != null) {
+            unregisterReceiver(mGeoBroadcastReceiver);
+        }
+        if (mGeoStatusBroadcastReceiver != null) {
+            unregisterReceiver(mGeoStatusBroadcastReceiver);
+        }
+
+        if (isServiceRunning(GeolocationService.class)) {
+            stopService(new Intent(getApplicationContext(), GeolocationService.class));
+        }
+    }
+
+    private boolean runtimePermissions() {
+        if(Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission(this, android.Manifest
+                .permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this, android.Manifest.permission
+                        .ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{
+                            android.Manifest.permission.ACCESS_FINE_LOCATION,
+                            android.Manifest.permission.ACCESS_COARSE_LOCATION
+                    }
+                    , Constants.REQUEST_LOCATION_PERMISSION);
+
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode == Constants.REQUEST_LOCATION_PERMISSION) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                if (isServiceRunning(GeolocationService.class)) {
+                    stopService(new Intent(getApplicationContext(), GeolocationService.class));
+                    startService(new Intent(getApplicationContext(), GeolocationService.class));
+                } else {
+                    startService(new Intent(getApplicationContext(), GeolocationService.class));
+                }
+            } else {
+                Toast.makeText(Form2Activity.this, R.string.permission_rationale_location, Toast.LENGTH_SHORT).show();
+                runtimePermissions();
+            }
+        }
     }
 
     @Override
@@ -148,64 +246,12 @@ public class Form2Activity extends AppCompatActivity
     }
 
     @Override
-    public void onConnected(@Nullable Bundle bundle) {
-        // Get last known recent location.
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            Toast.makeText(this, "Not enabled location", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        Location mCurrentLocation = LocationServices.FusedLocationApi
-                .getLastLocation(mGoogleApiClient);
-        // Note that this can be NULL if last location isn't already known.
-        if (mCurrentLocation != null) {
-            // Print current location if not null
-            Log.d("DEBUG", "current location: " + mCurrentLocation.toString());
-            LatLng latLng = new LatLng(mCurrentLocation.getLatitude(),
-                    mCurrentLocation.getLongitude());
-        }
-        // Begin polling for new location updates.
-        startLocationUpdates();
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-        if (i == CAUSE_SERVICE_DISCONNECTED) {
-            Toast.makeText(this, "Disconnected. Please re-connect.", Toast.LENGTH_SHORT).show();
-        } else if (i == CAUSE_NETWORK_LOST) {
-            Toast.makeText(this, "Network lost. Please re-connect.", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-
-    @Override
-    public void onLocationChanged(Location location) {
-        String msg = "Updated Location: " +
-                Double.toString(location.getLatitude()) + "," +
-                Double.toString(location.getLongitude());
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-
-        // Optional, a LatLng object
-        // LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-
-        new NearestStation(location.getLatitude(), location.getLongitude()).execute();
-    }
-
-    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.act_form_btn_go:
                 //startActivity(new Intent(this, TripActivity.class));
                 Log.d("goBtn", "onClick");
-                new TestDirections().execute();
+                new FetchDirectionsTask().execute();
                 break;
             case R.id.act_form_btn_test:
                 Intent stationIntent = new Intent(getApplicationContext(), StationsActivity.class);
@@ -224,24 +270,26 @@ public class Form2Activity extends AppCompatActivity
         }
     }
 
+
+    //TODO: REMOVE DEFAULT VALUE AND REPLACE WITH NULL CHECK?
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_PICK_STATION) {
             if (resultCode == Activity.RESULT_OK) {
                 int destinationIndex = data.getIntExtra(Constants.EXTRA_STATION_INDEX, Constants.STATION_INDEX_DEFAULT_VALUE);
-                new FetchStationAsync(destinationIndex).execute();
+                new FetchStationTask(destinationIndex).execute();
             }
         }
     }
 
-    private class NearestStation extends AsyncTask<Void, Void, StationLocation> {
+    private class FetchNearestStationTask extends AsyncTask<Void, Void, StationLocation> {
 
         private double mCurrentLat;
         private double mCurrentLng;
 
-        public NearestStation(double currentLat, double currentLng) {
-            mCurrentLat = currentLat;
-            mCurrentLng = currentLng;
+        public FetchNearestStationTask(LatLng currentPosition) {
+            mCurrentLat = currentPosition.latitude;
+            mCurrentLng = currentPosition.longitude;
         }
 
         @Override
@@ -271,48 +319,18 @@ public class Form2Activity extends AppCompatActivity
 
     }
 
-    protected void startLocationUpdates() {
-        // Create the location request
-        mLocationRequest = LocationRequest.create()
-                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                .setInterval(UPDATE_INTERVAL)
-                .setFastestInterval(FASTEST_INTERVAL);
-        // Request location updates
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            Toast.makeText(this, "THIS DOESNT WORK SHOW? Not enabled location", Toast.LENGTH_SHORT)
-                    .show();
-            return;
-        }
-        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest,
-                this);
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-    }
-
-    private class FetchStationAsync extends AsyncTask<Void, Void, StationLocation> {
+    private class FetchStationTask extends AsyncTask<Void, Void, StationLocation> {
 
         private int mStaIndex;
 
-        public FetchStationAsync(int stationIndex) {
+        public FetchStationTask(int stationIndex) {
             mStaIndex = stationIndex;
         }
 
         @Override
         protected void onPreExecute() {
             if (mStaIndex < 0) {
-                Log.e("FetchStationAsync", "Invalid index");
+                Log.e("FetchStationTask", "Invalid index");
                 return;
             }
         }
@@ -339,7 +357,7 @@ public class Form2Activity extends AppCompatActivity
         }
     }
 
-    private class TestDirections extends AsyncTask<Void, Void, List<Step>> {
+    private class FetchDirectionsTask extends AsyncTask<Void, Void, List<Step>> {
 
         @Override
         protected List<Step> doInBackground(Void... params) {
@@ -371,5 +389,15 @@ public class Form2Activity extends AppCompatActivity
                 }
             }
         }
+    }
+
+    private boolean isServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

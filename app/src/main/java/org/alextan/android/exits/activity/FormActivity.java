@@ -312,7 +312,7 @@ public class FormActivity extends AppCompatActivity
         @Override
         protected void onPreExecute() {
             if (mStaIndex < 0) {
-                Log.e("FetchStationAsync", "Invalid index");
+                Log.e("FetchStationTask", "Invalid index");
                 return;
             }
         }

@@ -15,6 +15,9 @@
     <string name="line_t5">T5 Cumberland Line</string>
     <string name="line_t6">T6 Carlingford Line</string>
     <string name="line_t7">T7 Olympic Park Line</string>
+    <string name="error_msg_location_disconnected">Disconnected. Please re-connect.</string>
+    <string name="error_msg_network_lost">Network lost. Please re-connect.</string>
+    <string name="permission_rationale_location">Exits needs your location in order to function.</string>
 
     <string-array name="exits_array">
         <item>Exit 1</item>

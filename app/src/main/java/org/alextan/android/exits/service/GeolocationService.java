@@ -11,7 +11,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -53,7 +52,9 @@ public class GeolocationService extends Service implements LocationListener,
     public void onDestroy() {
         Log.d("GeoService", "onDestroy");
 
-        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+        if (mGoogleApiClient.isConnected()) {
+            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+        }
 
         if (mGoogleApiClient != null) {
             mGoogleApiClient.disconnect();
@@ -66,9 +67,9 @@ public class GeolocationService extends Service implements LocationListener,
     public void onLocationChanged(Location location) {
         Log.d("GeoService", "onLocationChanged");
 
-        Intent i = new Intent(Constants.ACTION_LOCATION_UPDATE);
-        i.putExtra(Constants.EXTRA_CURRENT_LATLNG, new LatLng(location.getLatitude(), location.getLongitude()));
-        sendBroadcast(i);
+        Intent updateLocationIntent = new Intent(Constants.ACTION_LOCATION_UPDATE);
+        updateLocationIntent.putExtra(Constants.EXTRA_CURRENT_LATLNG, new LatLng(location.getLatitude(), location.getLongitude()));
+        sendBroadcast(updateLocationIntent);
     }
 
     @Override
@@ -86,6 +87,8 @@ public class GeolocationService extends Service implements LocationListener,
             Log.d("DEBUG", "current location: " + currentLocation.toString());
             LatLng latLng = new LatLng(currentLocation.getLatitude(),
                     currentLocation.getLongitude());
+
+            //TODO: make intent here?
         }
         // Begin polling for new location updates.
         startLocationUpdates();
@@ -112,15 +115,22 @@ public class GeolocationService extends Service implements LocationListener,
         Log.d("GeoService", "onConnectionSuspended");
 
         if (i == CAUSE_SERVICE_DISCONNECTED) {
-            Toast.makeText(this, "Disconnected. Please re-connect.", Toast.LENGTH_SHORT).show();
+            Intent geoStatusIntent = new Intent(Constants.ACTION_GEO_STATUS);
+            geoStatusIntent.putExtra(Constants.EXTRA_LOCATION_DISCONNECTED, "");
+            sendBroadcast(geoStatusIntent);
         } else if (i == CAUSE_NETWORK_LOST) {
-            Toast.makeText(this, "Network lost. Please re-connect.", Toast.LENGTH_SHORT).show();
+            Intent geoStatusIntent = new Intent(Constants.ACTION_GEO_STATUS);
+            geoStatusIntent.putExtra(Constants.EXTRA_NETWORK_LOST, "");
+            sendBroadcast(geoStatusIntent);
         }
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Log.d("GeoService", "onConnectionFailed");
+        Intent geoStatusIntent = new Intent(Constants.ACTION_GEO_STATUS);
+        geoStatusIntent.putExtra(Constants.EXTRA_CONN_FAILED, connectionResult.getErrorMessage());
+        sendBroadcast(geoStatusIntent);
     }
 
     private boolean runtimePermissions() {
