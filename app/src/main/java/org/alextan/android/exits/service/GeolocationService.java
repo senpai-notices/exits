@@ -64,8 +64,6 @@ public class GeolocationService extends Service implements LocationListener,
         super.onDestroy();
     }
 
-
-
     @Override
     public void onLocationChanged(Location location) {
         Log.d("GeoService", "onLocationChanged");
@@ -95,7 +93,6 @@ public class GeolocationService extends Service implements LocationListener,
         startLocationUpdates();
     }
 
-    // OR PRIVATE?
     protected void startLocationUpdates() {
         Log.d("GeoService", "startLocationUpdates");
 
