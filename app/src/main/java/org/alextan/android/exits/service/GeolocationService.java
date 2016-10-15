@@ -42,7 +42,6 @@ public class GeolocationService extends Service implements LocationListener,
     public void onCreate() {
         Log.d("GeoService", "onCreate");
 
-
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(LocationServices.API)
                 .addConnectionCallbacks(this)
@@ -101,9 +100,11 @@ public class GeolocationService extends Service implements LocationListener,
                 .setInterval(UPDATE_INTERVAL)
                 .setFastestInterval(FASTEST_INTERVAL);
 
-
-        if (!runtimePermissions()) //noinspection MissingPermission
-            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+        if (!runtimePermissions()) {
+            //noinspection MissingPermission
+            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient,
+                    mLocationRequest, this);
+        }
     }
 
     @Override
