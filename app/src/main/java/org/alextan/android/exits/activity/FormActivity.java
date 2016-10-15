@@ -228,7 +228,7 @@ public class FormActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_PICK_STATION) {
             if (resultCode == Activity.RESULT_OK) {
-                int destinationIndex = data.getIntExtra(Constants.EXTRA_STATION_INDEX, -1);
+                int destinationIndex = data.getIntExtra(Constants.EXTRA_STATION_INDEX, Constants.STATION_INDEX_DEFAULT_VALUE);
                 new FetchStationAsync(destinationIndex).execute();
             }
         }
