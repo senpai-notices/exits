@@ -18,7 +18,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import org.alextan.android.exits.Constants;
 import org.alextan.android.exits.R;
-import org.alextan.android.exits.service.Geolocation2Service;
+import org.alextan.android.exits.service.GeolocationService;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -90,14 +90,14 @@ public class TestActivity extends AppCompatActivity {
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), Geolocation2Service.class);
+                Intent i = new Intent(getApplicationContext(), GeolocationService.class);
                 startService(i);
             }
         });
         stop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), Geolocation2Service.class);
+                Intent i = new Intent(getApplicationContext(), GeolocationService.class);
                 stopService(i);
             }
         });
