@@ -18,6 +18,10 @@
             android:screenOrientation="portrait">
         </activity>
         <activity
+            android:name=".activity.Form2Activity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
             android:name=".activity.HistoryActivity"
             android:label="@string/title_activity_history"
             android:theme="@style/AppTheme.NoActionBar"
