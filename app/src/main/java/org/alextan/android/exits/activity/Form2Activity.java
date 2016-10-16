@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -35,15 +36,15 @@ import org.alextan.android.exits.model.StationLocation;
 import org.alextan.android.exits.model.directions.Step;
 import org.alextan.android.exits.service.GeolocationService;
 import org.alextan.android.exits.util.LocationMath;
+import org.alextan.android.exits.util.TrainUtil;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
-
-import static org.alextan.android.exits.util.TrainUtil.isSydneyTrainsLine;
 
 /**
  * The first activity of the app.
@@ -254,8 +255,9 @@ public class Form2Activity extends AppCompatActivity implements View.OnClickList
                 new FetchDirectionsTask().execute();
                 break;
             case R.id.act_form_btn_test:
-                Intent stationIntent = new Intent(getApplicationContext(), StationsActivity.class);
-                startActivityForResult(stationIntent, REQUEST_PICK_STATION);
+                Intent pickStationIntent = new Intent(getApplicationContext(), StationsActivity.class);
+                pickStationIntent.putExtra(Constants.EXTRA_STATION_INDEX, mOriginStation.getStopIndex());
+                startActivityForResult(pickStationIntent, REQUEST_PICK_STATION);
                 break;
             case R.id.act_form_test_a_to_b:
                 String msg = "";
@@ -277,7 +279,9 @@ public class Form2Activity extends AppCompatActivity implements View.OnClickList
         if (requestCode == REQUEST_PICK_STATION) {
             if (resultCode == Activity.RESULT_OK) {
                 int destinationIndex = data.getIntExtra(Constants.EXTRA_STATION_INDEX, Constants.STATION_INDEX_DEFAULT_VALUE);
-                new FetchStationTask(destinationIndex).execute();
+                if (destinationIndex > 0) {
+                    new FetchStationTask(destinationIndex).execute();
+                }
             }
         }
     }
@@ -321,15 +325,15 @@ public class Form2Activity extends AppCompatActivity implements View.OnClickList
 
     private class FetchStationTask extends AsyncTask<Void, Void, StationLocation> {
 
-        private int mStaIndex;
+        private int mStationIndex;
 
         public FetchStationTask(int stationIndex) {
-            mStaIndex = stationIndex;
+            mStationIndex = stationIndex;
         }
 
         @Override
         protected void onPreExecute() {
-            if (mStaIndex < 0) {
+            if (mStationIndex < 0) {
                 Log.e("FetchStationTask", "Invalid index");
                 return;
             }
@@ -338,7 +342,7 @@ public class Form2Activity extends AppCompatActivity implements View.OnClickList
         @Override
         protected StationLocation doInBackground(Void... params) {
             GtfsApi gtfsApi = GtfsApi.retrofit.create(GtfsApi.class);
-            Call<StationLocation> call = gtfsApi.getStation(mStaIndex);
+            Call<StationLocation> call = gtfsApi.getStation(mStationIndex);
             StationLocation response = null;
             try {
                 response = call.execute().body();
@@ -378,16 +382,21 @@ public class Form2Activity extends AppCompatActivity implements View.OnClickList
 
         @Override
         protected void onPostExecute(List<Step> result) {
-            Log.d("testdirections", "onPostExecute()");
             if (result.size() == 0) {
                 Log.d("onPostExecute()", "Empty transitSteps! Should display error message. Also try to prevent selecting duplicate station.");
             }
             for (Step step : result) {
                 Log.d("testdirections", step.getDepartureStop() + "->" + step.getArrivalStop());
-                if (!isSydneyTrainsLine(step.getLine(), Form2Activity.this)) {
+                if (!TrainUtil.isSydneyTrainsLine(step.getLine(), Form2Activity.this)) {
                     Log.d("onPostExecute()", "Non-Sydney Trains line detected. Should display error message.");
                 }
             }
+
+            Intent tripIntent = new Intent(getApplicationContext(), TripActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putParcelableArrayList(Constants.KEY_STEPS, (ArrayList<? extends Parcelable>) result);
+            tripIntent.putExtras(bundle);
+            startActivity(tripIntent);
         }
     }
 

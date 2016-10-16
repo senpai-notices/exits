@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/trip_item_root_layout">
+
+    <RelativeLayout
+        android:layout_width="90dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/trip_item_layout_times">
+        <TextView
+            android:text="10:00 AM"
+            android:textAppearance="?android:attr/textAppearanceListItem"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:id="@+id/station_item_tv_departure_time"
+            android:layout_alignParentTop="true"
+            />
+        <TextView
+            android:text="11:34 AM"
+            android:textAppearance="?android:attr/textAppearanceListItem"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:id="@+id/station_item_tv_arrival_time"
+            android:layout_below="@+id/station_item_tv_departure_time"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="15dp"
+        android:layout_height="match_parent"
+        android:layout_toRightOf="@id/trip_item_layout_times"
+        android:background="#339433"
+        android:id="@+id/trip_item_layout_line"
+        android:orientation="horizontal">
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_toRightOf="@id/trip_item_layout_line"
+        android:id="@+id/trip_item_layout_route">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Origin"
+            android:id="@+id/trip_item_tv_origin"
+            android:layout_alignParentTop="true"
+            android:textAppearance="?android:attr/textAppearanceListItem"
+            android:textSize="30sp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Line"
+            android:id="@+id/trip_item_tv_line"
+            android:layout_below="@+id/trip_item_tv_origin"
+            android:textAppearance="?android:attr/textAppearanceListItem"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Duration"
+            android:id="@+id/trip_item_tv_duration"
+            android:layout_below="@+id/trip_item_tv_line"
+            android:textAppearance="?android:attr/textAppearanceListItem"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Destination"
+            android:id="@+id/trip_item_tv_destination"
+            android:layout_below="@+id/trip_item_tv_duration"
+            android:textAppearance="?android:attr/textAppearanceListItem"
+            android:textSize="30sp"/>
+    </RelativeLayout>
+</RelativeLayout>

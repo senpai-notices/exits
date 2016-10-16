@@ -1,6 +1,9 @@
 package org.alextan.android.exits.model.directions;
 
-public class Step {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Step implements Parcelable{
 
     private String mArrivalStop;
     private String mArrivalTime;
@@ -54,5 +57,39 @@ public class Step {
 
     public void setLine(String line) {
         mLine = line;
+    }
+
+    protected Step(Parcel in) {
+        mArrivalStop = in.readString();
+        mArrivalTime = in.readString();
+        mDepartureStop = in.readString();
+        mDepartureTime = in.readString();
+        mLine = in.readString();
+    }
+
+    public static final Creator<Step> CREATOR = new Creator<Step>() {
+        @Override
+        public Step createFromParcel(Parcel in) {
+            return new Step(in);
+        }
+
+        @Override
+        public Step[] newArray(int size) {
+            return new Step[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(mArrivalStop);
+        dest.writeString(mArrivalTime);
+        dest.writeString(mDepartureStop);
+        dest.writeString(mDepartureTime);
+        dest.writeString(mLine);
     }
 }

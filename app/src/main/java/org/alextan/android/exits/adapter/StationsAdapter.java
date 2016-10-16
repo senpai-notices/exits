@@ -19,12 +19,12 @@ import org.alextan.android.exits.model.StationLocation;
 
 import java.util.List;
 
-public class StationAdapter extends RecyclerView.Adapter<StationAdapter.ViewHolder> implements FastScrollRecyclerView.SectionedAdapter{
+public class StationsAdapter extends RecyclerView.Adapter<StationsAdapter.ViewHolder> implements FastScrollRecyclerView.SectionedAdapter{
 
     private Context mContext;
     private List<StationLocation> mStations;
 
-    public StationAdapter(Context context, List<StationLocation> stations) {
+    public StationsAdapter(Context context, List<StationLocation> stations) {
         mContext = context;
         mStations = stations;
     }
@@ -53,13 +53,13 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        public TextView mTvStationName;
+        private TextView mTvStationName;
         private RelativeLayout mLayoutRoot;
         private StationLocation mItem;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            mLayoutRoot = (RelativeLayout) itemView.findViewById(R.id.station_item_root_layout);
+            mLayoutRoot = (RelativeLayout) itemView.findViewById(R.id.trip_item_root_layout);
             mTvStationName = (TextView) itemView.findViewById(R.id.station_item_tv_station_name);
 
             mLayoutRoot.setOnClickListener(this);

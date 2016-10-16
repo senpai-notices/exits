@@ -13,4 +13,6 @@ public class Constants {
     public static final String EXTRA_LOCATION_DISCONNECTED = "location_disconnected";
     public static final String EXTRA_NETWORK_LOST = "network_lost";
     public static final String EXTRA_CONN_FAILED= "conn_failed";
+
+    public static final String KEY_STEPS = "key_steps";
 }
