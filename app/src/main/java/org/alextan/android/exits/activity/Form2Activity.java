@@ -28,8 +28,8 @@ import com.google.android.gms.maps.model.LatLng;
 
 import org.alextan.android.exits.Constants;
 import org.alextan.android.exits.R;
-import org.alextan.android.exits.endpoint.DirectionsEndpoint;
-import org.alextan.android.exits.endpoint.GtfsEndpoint;
+import org.alextan.android.exits.api.DirectionsApi;
+import org.alextan.android.exits.api.GtfsApi;
 import org.alextan.android.exits.model.DreamFactoryResource;
 import org.alextan.android.exits.model.StationLocation;
 import org.alextan.android.exits.model.directions.Step;
@@ -296,8 +296,8 @@ public class Form2Activity extends AppCompatActivity implements View.OnClickList
         protected StationLocation doInBackground(Void... params) {
             List<StationLocation> result;
 
-            GtfsEndpoint gtfsEndpoint = GtfsEndpoint.retrofit.create(GtfsEndpoint.class);
-            Call<DreamFactoryResource<StationLocation>> call = gtfsEndpoint.getAllStationLocations();
+            GtfsApi gtfsApi = GtfsApi.retrofit.create(GtfsApi.class);
+            Call<DreamFactoryResource<StationLocation>> call = gtfsApi.getAllStationLocations();
             DreamFactoryResource<StationLocation> response = null;
             try {
                 response = call.execute().body();
@@ -337,8 +337,8 @@ public class Form2Activity extends AppCompatActivity implements View.OnClickList
 
         @Override
         protected StationLocation doInBackground(Void... params) {
-            GtfsEndpoint gtfsEndpoint = GtfsEndpoint.retrofit.create(GtfsEndpoint.class);
-            Call<StationLocation> call = gtfsEndpoint.getStation(mStaIndex);
+            GtfsApi gtfsApi = GtfsApi.retrofit.create(GtfsApi.class);
+            Call<StationLocation> call = gtfsApi.getStation(mStaIndex);
             StationLocation response = null;
             try {
                 response = call.execute().body();
@@ -361,8 +361,8 @@ public class Form2Activity extends AppCompatActivity implements View.OnClickList
 
         @Override
         protected List<Step> doInBackground(Void... params) {
-            DirectionsEndpoint directionsEndpoint = DirectionsEndpoint.retrofit.create(DirectionsEndpoint.class);
-            Call<List<Step>> call = directionsEndpoint.getDirection(
+            DirectionsApi directionsApi = DirectionsApi.retrofit.create(DirectionsApi.class);
+            Call<List<Step>> call = directionsApi.getDirection(
                     (mOriginStation.getStopLat() + "," + mOriginStation.getStopLon()),
                     (mDestinationStation.getStopLat() + "," + mDestinationStation.getStopLon())
             );

@@ -1,4 +1,4 @@
-package org.alextan.android.exits.endpoint;
+package org.alextan.android.exits.api;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -18,7 +18,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.Path;
 
-public interface GtfsEndpoint {
+public interface GtfsApi {
     String URL = "***REMOVED***";
     String API_KEY_KEY = "X-DreamFactory-Api-Key";
     String API_KEY_VALUE = "***REMOVED***";

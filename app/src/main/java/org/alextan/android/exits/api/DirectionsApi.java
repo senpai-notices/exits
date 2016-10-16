@@ -1,4 +1,4 @@
-package org.alextan.android.exits.endpoint;
+package org.alextan.android.exits.api;
 
 
 import com.google.gson.Gson;
@@ -17,7 +17,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
-public interface DirectionsEndpoint {
+public interface DirectionsApi {
     String PARAM_KEY_API_KEY = "key";
     String PARAM_VALUE_API_KEY = "***REMOVED***";
     String PARAM_KEY_ORIGIN = "origin";

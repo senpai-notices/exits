@@ -11,7 +11,7 @@ import org.alextan.android.exits.R;
 import org.alextan.android.exits.adapter.StationAdapter;
 import org.alextan.android.exits.model.DreamFactoryResource;
 import org.alextan.android.exits.model.StationLocation;
-import org.alextan.android.exits.endpoint.GtfsEndpoint;
+import org.alextan.android.exits.api.GtfsApi;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,8 +36,8 @@ public class StationsActivity extends AppCompatActivity {
 
         @Override
         protected ArrayList<StationLocation> doInBackground(Void... params) {
-            GtfsEndpoint gtfsEndpoint = GtfsEndpoint.retrofit.create(GtfsEndpoint.class);
-            Call<DreamFactoryResource<StationLocation>> call = gtfsEndpoint.getAllStationLocations();
+            GtfsApi gtfsApi = GtfsApi.retrofit.create(GtfsApi.class);
+            Call<DreamFactoryResource<StationLocation>> call = gtfsApi.getAllStationLocations();
             DreamFactoryResource<StationLocation> response = null;
             try {
                 response = call.execute().body();
