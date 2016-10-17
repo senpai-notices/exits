@@ -1,7 +1,9 @@
-package org.alextan.android.exits.model.directions;
+package org.alextan.android.exits.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import org.alextan.android.exits.util.TrainUtil;
 
 public class Step implements Parcelable{
 
@@ -10,6 +12,9 @@ public class Step implements Parcelable{
     private String mDepartureStop;
     private String mDepartureTime;
     private String mLine;
+
+    public Step() {
+    }
 
     public Step(String arrivalStop, String arrivalTime, String departureStop, String departureTime, String line) {
         mArrivalStop = arrivalStop;
@@ -24,7 +29,7 @@ public class Step implements Parcelable{
     }
 
     public void setArrivalStop(String arrivalStop) {
-        mArrivalStop = arrivalStop;
+        mArrivalStop = TrainUtil.cleanseStationName(arrivalStop);
     }
 
     public String getArrivalTime() {
@@ -40,7 +45,7 @@ public class Step implements Parcelable{
     }
 
     public void setDepartureStop(String departureStop) {
-        mDepartureStop = departureStop;
+        mDepartureStop = TrainUtil.cleanseStationName(departureStop);
     }
 
     public String getDepartureTime() {
@@ -56,7 +61,7 @@ public class Step implements Parcelable{
     }
 
     public void setLine(String line) {
-        mLine = line;
+        mLine = TrainUtil.cleanseLineName(line);
     }
 
     protected Step(Parcel in) {

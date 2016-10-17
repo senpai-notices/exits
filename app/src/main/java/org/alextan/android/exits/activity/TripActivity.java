@@ -6,10 +6,10 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import org.alextan.android.exits.Constants;
+import org.alextan.android.exits.common.Constants;
 import org.alextan.android.exits.R;
 import org.alextan.android.exits.adapter.TripAdapter;
-import org.alextan.android.exits.model.directions.Step;
+import org.alextan.android.exits.model.Step;
 
 import java.util.List;
 

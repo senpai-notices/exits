@@ -7,7 +7,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import org.alextan.android.exits.Constants;
+import org.alextan.android.exits.common.Constants;
 import org.alextan.android.exits.R;
 import org.alextan.android.exits.adapter.StationsAdapter;
 import org.alextan.android.exits.model.DreamFactoryResource;

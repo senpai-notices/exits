@@ -3,4 +3,12 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="colorT1Line">#F5A81C</color>
+    <color name="colorT2Line">#4F9F45</color>
+    <color name="colorT3Line">#F2662A</color>
+    <color name="colorT4Line">#0083BF</color>
+    <color name="colorT5Line">#C5499B</color>
+    <color name="colorT6Line">#366195</color>
+    <color name="colorT7Line">#6E818E</color>
+    <color name="colorOtherLine">#00fffb</color>
 </resources>

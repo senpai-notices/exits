@@ -1,7 +1,6 @@
 package org.alextan.android.exits.adapter;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +9,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.alextan.android.exits.R;
-import org.alextan.android.exits.model.directions.Step;
+import org.alextan.android.exits.model.Step;
+import org.alextan.android.exits.util.TrainUtil;
 
 import java.util.List;
 
@@ -73,8 +73,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
             mTvDestination.setText(mItem.getArrivalStop());
             mTvLine.setText(mItem.getLine());
             mTvDuration.setText("TODO");
-            mLayoutLine.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
-            mLayoutLine.setBackgroundResource(R.color.colorPrimary);
+            mLayoutLine.setBackgroundResource(TrainUtil.chooseLineColour(mItem.getLine()));
         }
     }
 }

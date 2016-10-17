@@ -6,7 +6,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import org.alextan.android.exits.deserialiser.DirectionsDeserialiser;
-import org.alextan.android.exits.model.directions.Step;
+import org.alextan.android.exits.model.Step;
 
 import java.lang.reflect.Type;
 import java.util.List;

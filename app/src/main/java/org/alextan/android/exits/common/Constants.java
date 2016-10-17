@@ -1,4 +1,4 @@
-package org.alextan.android.exits;
+package org.alextan.android.exits.common;
 
 public class Constants {
     public static final int REQUEST_LOCATION_PERMISSION = 100;

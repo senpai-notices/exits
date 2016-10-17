@@ -14,10 +14,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activity.FormActivity"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity
             android:name=".activity.Form2Activity"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -32,24 +28,11 @@
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".activity.SettingsActivity"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity
             android:name=".activity.StationsActivity"
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".activity.SplashActivity"
-            android:screenOrientation="portrait">
-
-        </activity>
-        <activity
             android:name=".activity.TripActivity"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity
-            android:name=".activity.TestActivity"
             android:screenOrientation="portrait">
         </activity>
 

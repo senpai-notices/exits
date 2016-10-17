@@ -27,13 +27,13 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
-import org.alextan.android.exits.Constants;
+import org.alextan.android.exits.common.Constants;
 import org.alextan.android.exits.R;
 import org.alextan.android.exits.api.DirectionsApi;
 import org.alextan.android.exits.api.GtfsApi;
 import org.alextan.android.exits.model.DreamFactoryResource;
 import org.alextan.android.exits.model.StationLocation;
-import org.alextan.android.exits.model.directions.Step;
+import org.alextan.android.exits.model.Step;
 import org.alextan.android.exits.service.GeolocationService;
 import org.alextan.android.exits.util.LocationMath;
 import org.alextan.android.exits.util.TrainUtil;
@@ -77,7 +77,7 @@ public class Form2Activity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_form);
+        setContentView(R.layout.activity_form2);
 
         initialiseUi();
 
@@ -391,6 +391,11 @@ public class Form2Activity extends AppCompatActivity implements View.OnClickList
                     Log.d("onPostExecute()", "Non-Sydney Trains line detected. Should display error message.");
                 }
             }
+
+/*            List<Step> cleansedResult = new ArrayList<>();
+            for (Step step: result) {
+                if (step.get)
+            }*/
 
             Intent tripIntent = new Intent(getApplicationContext(), TripActivity.class);
             Bundle bundle = new Bundle();

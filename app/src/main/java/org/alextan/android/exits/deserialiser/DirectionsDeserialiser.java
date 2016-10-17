@@ -9,7 +9,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
-import org.alextan.android.exits.model.directions.Step;
+import org.alextan.android.exits.model.Step;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -32,23 +32,23 @@ public class DirectionsDeserialiser implements JsonDeserializer<List<Step>>{
             JsonElement innerObject = stepsArray.get(i);
             if (innerObject.getAsJsonObject().get("travel_mode").getAsString().equals("TRANSIT")) {
                 JsonElement innerObject2 = innerObject.getAsJsonObject().get("transit_details");
-                transitSteps.add(new Step(
-                        innerObject2.getAsJsonObject()
-                            .get("arrival_stop").getAsJsonObject()
-                            .get("name").getAsString(),
-                        innerObject2.getAsJsonObject()
-                                .get("arrival_time").getAsJsonObject()
-                                .get("text").getAsString(),
-                        innerObject2.getAsJsonObject()
-                                .get("departure_stop").getAsJsonObject()
-                                .get("name").getAsString(),
-                        innerObject2.getAsJsonObject()
-                                .get("departure_time").getAsJsonObject()
-                                .get("text").getAsString(),
-                        innerObject2.getAsJsonObject().getAsJsonObject()
-                                .get("line").getAsJsonObject()
-                                .get("name").getAsString()
-                ));
+                Step step = new Step();
+                step.setArrivalStop(innerObject2.getAsJsonObject()
+                        .get("arrival_stop").getAsJsonObject()
+                        .get("name").getAsString());
+                step.setArrivalTime(innerObject2.getAsJsonObject()
+                        .get("arrival_time").getAsJsonObject()
+                        .get("text").getAsString());
+                step.setDepartureStop(innerObject2.getAsJsonObject()
+                        .get("departure_stop").getAsJsonObject()
+                        .get("name").getAsString());
+                step.setDepartureTime(innerObject2.getAsJsonObject()
+                        .get("departure_time").getAsJsonObject()
+                        .get("text").getAsString());
+                step.setLine(innerObject2.getAsJsonObject().getAsJsonObject()
+                        .get("line").getAsJsonObject()
+                        .get("name").getAsString());
+                transitSteps.add(step);
             }
         }
 
