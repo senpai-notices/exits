@@ -49,7 +49,7 @@ import retrofit2.Call;
  * Automatically fetches nearest train station.
  * User inputs destination station and exit.
  */
-public class Form2Activity extends AppCompatActivity implements View.OnClickListener {
+public class FormActivity extends AppCompatActivity implements View.OnClickListener {
 
     @BindView(R.id.act_form_btn_go)
     Button mBtnGo;
@@ -73,7 +73,7 @@ public class Form2Activity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_form2);
+        setContentView(R.layout.activity_form);
 
         initialiseUi();
 
@@ -115,7 +115,7 @@ public class Form2Activity extends AppCompatActivity implements View.OnClickList
                         String msg = "Updated Location: " +
                                 Double.toString(currentPosition.latitude) + "," +
                                 Double.toString(currentPosition.longitude);
-                        Toast.makeText(Form2Activity.this, msg, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(FormActivity.this, msg, Toast.LENGTH_SHORT).show();
 
                         new FetchNearestStationTask(currentPosition).execute();
                     }
@@ -132,16 +132,16 @@ public class Form2Activity extends AppCompatActivity implements View.OnClickList
 
                     if (bundle != null) {
                         if (bundle.containsKey(Constants.EXTRA_LOCATION_DISCONNECTED)) {
-                            Toast.makeText(Form2Activity.this,
+                            Toast.makeText(FormActivity.this,
                                     R.string.error_msg_location_disconnected, Toast.LENGTH_SHORT)
                                     .show();
                         }
                         if (bundle.containsKey(Constants.EXTRA_NETWORK_LOST)) {
-                            Toast.makeText(Form2Activity.this, R.string.error_msg_network_lost,
+                            Toast.makeText(FormActivity.this, R.string.error_msg_network_lost,
                                     Toast.LENGTH_SHORT).show();
                         }
                         if (bundle.containsKey(Constants.EXTRA_CONN_FAILED)) {
-                            Toast.makeText(Form2Activity.this, "Error: "
+                            Toast.makeText(FormActivity.this, "Error: "
                                     + bundle.getString(Constants.EXTRA_CONN_FAILED),
                                     Toast.LENGTH_SHORT).show();
                         }
@@ -210,7 +210,7 @@ public class Form2Activity extends AppCompatActivity implements View.OnClickList
                     startService(new Intent(getApplicationContext(), GeolocationService.class));
                 }
             } else {
-                Toast.makeText(Form2Activity.this, R.string.permission_rationale_location, Toast.LENGTH_SHORT).show();
+                Toast.makeText(FormActivity.this, R.string.permission_rationale_location, Toast.LENGTH_SHORT).show();
                 runtimePermissions();
             }
         }
@@ -376,7 +376,7 @@ public class Form2Activity extends AppCompatActivity implements View.OnClickList
             }
             for (Step step : result) {
                 Log.d("testdirections", step.getDepartureStop() + "->" + step.getArrivalStop());
-                if (!TrainUtil.isSydneyTrainsLine(step.getLine(), Form2Activity.this)) {
+                if (!TrainUtil.isSydneyTrainsLine(step.getLine(), FormActivity.this)) {
                     Log.d("onPostExecute()", "Non-Sydney Trains line detected. Should display error message.");
                 }
             }
