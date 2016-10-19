@@ -29,7 +29,8 @@ public interface DirectionsApi {
     String URL = "https://maps.googleapis.com/maps/api/directions/";
 
     //TODO
-    String TEMP = "&departure_time=1476921600";
+    String TEMP = "&departure_time=1476921600"; // 10 am weekday
+    String TEMP2 = "&departure_time=1476886594"; // ~ midnight weekday
 
 
     @GET("json?" + PARAM_KEY_API_KEY + "=" + PARAM_VALUE_API_KEY + "&" + PARAM_KEY_MODE + "="

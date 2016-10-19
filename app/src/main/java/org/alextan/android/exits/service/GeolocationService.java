@@ -27,8 +27,8 @@ public class GeolocationService extends Service implements LocationListener,
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
 
-    private long UPDATE_INTERVAL = 10 * 1000;
-    private long FASTEST_INTERVAL = 2000;
+    private long UPDATE_INTERVAL = 15 * 1000;
+    private long FASTEST_INTERVAL = 5 * 1000;
 
     @Nullable
     @Override

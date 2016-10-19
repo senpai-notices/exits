@@ -1,5 +1,6 @@
 package org.alextan.android.exits.activity;
 
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -26,6 +27,7 @@ public class StationsActivity extends AppCompatActivity {
     private RecyclerView mStationRecyclerView;
     private StationsAdapter mStationsAdapter;
     private int mOriginStationIndex;
+    private ProgressDialog mLoadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,12 +36,17 @@ public class StationsActivity extends AppCompatActivity {
         mOriginStationIndex = getIntent()
                 .getIntExtra(Constants.EXTRA_STATION_INDEX, Constants.STATION_INDEX_DEFAULT_VALUE);
         if (mOriginStationIndex > 0) {
-            new FetchStationList().execute();
+            new FetchStationListTask().execute();
         }
         // or redirect back to form
     }
 
-    private class FetchStationList extends AsyncTask<Void, Void, ArrayList<StationLocation>> {
+    private class FetchStationListTask extends AsyncTask<Void, Void, ArrayList<StationLocation>> {
+
+        @Override
+        protected void onPreExecute() {
+            mLoadingDialog = ProgressDialog.show(StationsActivity.this, null, getString(R.string.msg_loading), true, false);
+        }
 
         @Override
         protected ArrayList<StationLocation> doInBackground(Void... params) {
@@ -86,6 +93,8 @@ public class StationsActivity extends AppCompatActivity {
             mStationRecyclerView.setLayoutManager(new LinearLayoutManager(StationsActivity.this));
             mStationRecyclerView.setItemAnimator(new DefaultItemAnimator());
             mStationRecyclerView.setAdapter(mStationsAdapter);
+
+            mLoadingDialog.dismiss();
         }
     }
 }

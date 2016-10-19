@@ -2,6 +2,7 @@ package org.alextan.android.exits.activity;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -34,7 +35,6 @@ import org.alextan.android.exits.model.StationLocation;
 import org.alextan.android.exits.model.Step;
 import org.alextan.android.exits.service.GeolocationService;
 import org.alextan.android.exits.util.LocationMath;
-import org.alextan.android.exits.util.TrainUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -55,12 +55,12 @@ public class FormActivity extends AppCompatActivity implements View.OnClickListe
     Button mBtnGo;
     @BindView(R.id.act_form_btn_test)
     Button mBtnTest;
-    @BindView(R.id.act_form_tv_nearest_station)
+    @BindView(R.id.act_form_tv_origin)
     TextView tvNearestStation;
     @BindView(R.id.act_form_tv_destination)
     TextView tvDestination;
-    @BindView(R.id.act_form_test_a_to_b)
-    Button mBtnTestAB;
+
+    private ProgressDialog mLoadingDialog;
 
     private BroadcastReceiver mGeoBroadcastReceiver;
     private BroadcastReceiver mGeoStatusBroadcastReceiver;
@@ -68,7 +68,7 @@ public class FormActivity extends AppCompatActivity implements View.OnClickListe
     private StationLocation mOriginStation;
     private StationLocation mDestinationStation;
 
-    static final int REQUEST_PICK_STATION = 11;
+    private static final int REQUEST_PICK_STATION = 11;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,8 +88,6 @@ public class FormActivity extends AppCompatActivity implements View.OnClickListe
 
         mBtnGo.setOnClickListener(this);
         mBtnTest.setOnClickListener(this);
-        mBtnTestAB.setOnClickListener(this);
-
     }
 
     @Override
@@ -141,7 +139,7 @@ public class FormActivity extends AppCompatActivity implements View.OnClickListe
                                     Toast.LENGTH_SHORT).show();
                         }
                         if (bundle.containsKey(Constants.EXTRA_CONN_FAILED)) {
-                            Toast.makeText(FormActivity.this, "Error: "
+                            Toast.makeText(FormActivity.this, getString(R.string.error_tag)
                                     + bundle.getString(Constants.EXTRA_CONN_FAILED),
                                     Toast.LENGTH_SHORT).show();
                         }
@@ -170,6 +168,7 @@ public class FormActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        // apprarently, it does not check enough that a reciever is registered
         if (mGeoBroadcastReceiver != null) {
             unregisterReceiver(mGeoBroadcastReceiver);
         }
@@ -248,14 +247,6 @@ public class FormActivity extends AppCompatActivity implements View.OnClickListe
                 pickStationIntent.putExtra(Constants.EXTRA_STATION_INDEX, mOriginStation.getStopIndex());
                 startActivityForResult(pickStationIntent, REQUEST_PICK_STATION);
                 break;
-            case R.id.act_form_test_a_to_b:
-                String msg = "";
-                if (mDestinationStation == null) msg += "dest is null. ";
-                else msg+= mDestinationStation.getStopName();
-                if (mOriginStation == null) msg += "origin is null. ";
-                else msg+= mOriginStation.getStopName();
-                Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-                break;
             default:
                 break;
         }
@@ -311,21 +302,13 @@ public class FormActivity extends AppCompatActivity implements View.OnClickListe
         }
 
     }
-
+// put progress ring
     private class FetchStationTask extends AsyncTask<Void, Void, StationLocation> {
 
         private int mStationIndex;
 
         public FetchStationTask(int stationIndex) {
             mStationIndex = stationIndex;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            if (mStationIndex < 0) {
-                Log.e("FetchStationTask", "Invalid index");
-                return;
-            }
         }
 
         @Override
@@ -353,6 +336,11 @@ public class FormActivity extends AppCompatActivity implements View.OnClickListe
     private class FetchDirectionsTask extends AsyncTask<Void, Void, List<Step>> {
 
         @Override
+        protected void onPreExecute() {
+            mLoadingDialog = ProgressDialog.show(FormActivity.this, null, getString(R.string.msg_loading), true, false);
+        }
+
+        @Override
         protected List<Step> doInBackground(Void... params) {
             DirectionsApi directionsApi = DirectionsApi.retrofit.create(DirectionsApi.class);
             Call<List<Step>> call = directionsApi.getDirection(
@@ -371,26 +359,20 @@ public class FormActivity extends AppCompatActivity implements View.OnClickListe
 
         @Override
         protected void onPostExecute(List<Step> result) {
+            mLoadingDialog.dismiss();
             if (result.size() == 0) {
-                Log.d("onPostExecute()", "Empty transitSteps! Should display error message. Also try to prevent selecting duplicate station.");
-            }
-            for (Step step : result) {
-                Log.d("testdirections", step.getDepartureStop() + "->" + step.getArrivalStop());
-                if (!TrainUtil.isSydneyTrainsLine(step.getLine(), FormActivity.this)) {
-                    Log.d("onPostExecute()", "Non-Sydney Trains line detected. Should display error message.");
+                Toast.makeText(FormActivity.this, R.string.msg_no_results, Toast.LENGTH_SHORT).show();
+            } else {
+                // TODO: remove this
+                for (Step step : result) {
+                    Log.d("testdirections", step.getDepartureStop() + "->" + step.getArrivalStop());
                 }
+                Intent tripIntent = new Intent(getApplicationContext(), TripActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putParcelableArrayList(Constants.KEY_STEPS, (ArrayList<? extends Parcelable>) result);
+                tripIntent.putExtras(bundle);
+                startActivity(tripIntent);
             }
-
-/*            List<Step> cleansedResult = new ArrayList<>();
-            for (Step step: result) {
-                if (step.get)
-            }*/
-
-            Intent tripIntent = new Intent(getApplicationContext(), TripActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putParcelableArrayList(Constants.KEY_STEPS, (ArrayList<? extends Parcelable>) result);
-            tripIntent.putExtras(bundle);
-            startActivity(tripIntent);
         }
     }
 

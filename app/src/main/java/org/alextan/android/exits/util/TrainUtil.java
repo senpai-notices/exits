@@ -5,27 +5,10 @@ import android.content.Context;
 import org.alextan.android.exits.R;
 import org.alextan.android.exits.common.Constants;
 
+/**
+ * Crap
+ */
 public class TrainUtil {
-
-    public static boolean isSydneyTrainsLine(String line, Context context) {
-        if (line.equals(context.getResources().getString(R.string.line_t1))) {
-            return true;
-        } else if (line.equals(context.getResources().getString(R.string.line_t2))) {
-            return true;
-        } else if (line.equals(context.getResources().getString(R.string.line_t3))) {
-            return true;
-        } else if (line.equals(context.getResources().getString(R.string.line_t4))) {
-            return true;
-        } else if (line.equals(context.getResources().getString(R.string.line_t5))) {
-            return true;
-        } else if (line.equals(context.getResources().getString(R.string.line_t6))) {
-            return true;
-        } else if (line.equals(context.getResources().getString(R.string.line_t7))) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 
     /**
      * Note: strings are stored in constants rather than string resources because context is not
