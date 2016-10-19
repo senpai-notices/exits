@@ -32,7 +32,6 @@
         android:layout_width="15dp"
         android:layout_height="match_parent"
         android:layout_toRightOf="@id/trip_item_layout_times"
-        android:background="#339433"
         android:id="@+id/trip_item_layout_line"
         android:orientation="horizontal">
     </RelativeLayout>

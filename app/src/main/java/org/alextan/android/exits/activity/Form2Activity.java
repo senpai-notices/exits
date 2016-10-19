@@ -19,18 +19,16 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
-import org.alextan.android.exits.common.Constants;
 import org.alextan.android.exits.R;
 import org.alextan.android.exits.api.DirectionsApi;
 import org.alextan.android.exits.api.GtfsApi;
+import org.alextan.android.exits.common.Constants;
 import org.alextan.android.exits.model.DreamFactoryResource;
 import org.alextan.android.exits.model.StationLocation;
 import org.alextan.android.exits.model.Step;
@@ -59,8 +57,6 @@ public class Form2Activity extends AppCompatActivity implements View.OnClickList
     Button mBtnTest;
     @BindView(R.id.act_form_tv_nearest_station)
     TextView tvNearestStation;
-    @BindView(R.id.sp_station_exits)
-    Spinner mSpinnerStationExits;
     @BindView(R.id.act_form_tv_destination)
     TextView tvDestination;
     @BindView(R.id.act_form_test_a_to_b)
@@ -90,13 +86,6 @@ public class Form2Activity extends AppCompatActivity implements View.OnClickList
     private void initialiseUi() {
         ButterKnife.bind(this);
 
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.exits_array, android.R.layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
-        mSpinnerStationExits.setAdapter(adapter);
         mBtnGo.setOnClickListener(this);
         mBtnTest.setOnClickListener(this);
         mBtnTestAB.setOnClickListener(this);

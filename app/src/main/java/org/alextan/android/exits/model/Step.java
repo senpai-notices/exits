@@ -16,14 +16,6 @@ public class Step implements Parcelable{
     public Step() {
     }
 
-    public Step(String arrivalStop, String arrivalTime, String departureStop, String departureTime, String line) {
-        mArrivalStop = arrivalStop;
-        mArrivalTime = arrivalTime;
-        mDepartureStop = departureStop;
-        mDepartureTime = departureTime;
-        mLine = line;
-    }
-
     public String getArrivalStop() {
         return mArrivalStop;
     }

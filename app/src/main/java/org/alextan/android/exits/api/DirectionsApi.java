@@ -28,9 +28,12 @@ public interface DirectionsApi {
     String PARAM_VALUE_TRANSIT_MODE = "train";
     String URL = "https://maps.googleapis.com/maps/api/directions/";
 
+    //TODO
+    String TEMP = "&departure_time=1476921600";
+
 
     @GET("json?" + PARAM_KEY_API_KEY + "=" + PARAM_VALUE_API_KEY + "&" + PARAM_KEY_MODE + "="
-            + PARAM_VALUE_MODE + "&" + PARAM_KEY_TRANSIT_MODE + "=" + PARAM_VALUE_TRANSIT_MODE)
+            + PARAM_VALUE_MODE + "&" + PARAM_KEY_TRANSIT_MODE + "=" + PARAM_VALUE_TRANSIT_MODE + TEMP)
     Call<List<Step>> getDirection(@Query("origin") String origin, @Query("destination") String destination);
 
     Type stepListType = new TypeToken<List<Step>>(){}.getType();

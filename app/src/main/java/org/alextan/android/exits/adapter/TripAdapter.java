@@ -1,6 +1,7 @@
 package org.alextan.android.exits.adapter;
 
 import android.content.Context;
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,8 +52,6 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
         private TextView mTvDuration;
         private RelativeLayout mLayoutLine;
 
-
-
         public ViewHolder(View itemView) {
             super(itemView);
             mTvArrivalTime = (TextView) itemView.findViewById(R.id.station_item_tv_arrival_time);
@@ -72,8 +71,12 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
             mTvOrigin.setText(mItem.getDepartureStop());
             mTvDestination.setText(mItem.getArrivalStop());
             mTvLine.setText(mItem.getLine());
-            mTvDuration.setText("TODO");
-            mLayoutLine.setBackgroundResource(TrainUtil.chooseLineColour(mItem.getLine()));
+            mTvDuration.setText("Duration");
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                mLayoutLine.setBackground(mContext.getDrawable(TrainUtil.fetchLineDrawable(mItem.getLine(), mContext)));
+            } else {
+                mLayoutLine.setBackgroundResource(TrainUtil.chooseLineColour(mItem.getLine(), mContext));
+            }
         }
     }
 }
