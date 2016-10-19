@@ -16,9 +16,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -216,29 +213,9 @@ public class FormActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-        switch (item.getItemId()) {
-            case R.id.menu_item_history:
-                Intent intent = new Intent(getApplicationContext(), HistoryActivity.class);
-                startActivity(intent);
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.act_form_btn_go:
-                //startActivity(new Intent(this, TripActivity.class));
                 Log.d("goBtn", "onClick");
                 new FetchDirectionsTask().execute();
                 break;
@@ -251,7 +228,6 @@ public class FormActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
     }
-
 
     //TODO: REMOVE DEFAULT VALUE AND REPLACE WITH NULL CHECK?
     @Override
