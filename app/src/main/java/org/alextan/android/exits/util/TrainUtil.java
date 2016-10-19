@@ -45,7 +45,9 @@ public class TrainUtil {
             return Constants.T7_LINE;
         } else if (line.contains(Constants.SUBSTRING_NORTH_COAST)) {
             return Constants.NORTH_COAST_NSW_LINE;
-        } else if (line.contains(Constants.SUBSTRING_SOUTHERN_NSW)) {
+        } else if (line.contains(Constants.SUBSTRING_SOUTHERN_NSW)
+                || line.contains(Constants.SUBSTRING_SYD_MEL_1)
+                || line.contains(Constants.SUBSTRING_SYD_MEL_2)) {
             return Constants.SOUTHERN_NSW_LINE;
         } else if (line.contains(Constants.SUBSTRING_WESTERN_NSW)) {
             return Constants.WESTERN_NSW_LINE;

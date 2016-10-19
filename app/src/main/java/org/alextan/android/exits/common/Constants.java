@@ -49,4 +49,6 @@ public class Constants {
     public static final String SEARCH_TRAIN_2 = "train";
     public static final String CLEANSED_SHELLHARBOUR = "Shellharbour";
     public static final String SEARCH_SHELLHARBOUR = "Shellharbour Junction";
+    public static final String SUBSTRING_SYD_MEL_1 = "Melbourne - Sydney";
+    public static final String SUBSTRING_SYD_MEL_2 = "Sydney - Melbourne";
 }
