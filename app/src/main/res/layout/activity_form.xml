@@ -68,6 +68,7 @@
         android:layout_height="wrap_content"
         android:textSize="30sp"
         android:textAppearance="?android:attr/textAppearance"
+        android:text="@string/choose_station"
         android:id="@+id/act_form_tv_destination"/>
 
     <Button

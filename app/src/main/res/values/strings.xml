@@ -21,5 +21,6 @@
     <string name="error_tag">"Error: "</string>
     <string name="msg_no_results">Sorry, no available results at this time! Please try again later!</string>
     <string name="msg_loading">Loading...</string>
+    <string name="choose_station">Choose station</string>
 
 </resources>
