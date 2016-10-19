@@ -1,7 +1,5 @@
 package org.alextan.android.exits.deserialiser;
 
-import android.util.Log;
-
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -35,23 +33,26 @@ public class DirectionsDeserialiser implements JsonDeserializer<List<Step>>{
     public static final String KEY_TYPE = "type";
 
     @Override
-    public List<Step> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+    public List<Step> deserialize(JsonElement json, Type typeOfT,
+                                  JsonDeserializationContext context) throws JsonParseException {
         JsonObject jsonObject = (JsonObject) json;
 
         JsonArray stepsArray = jsonObject.getAsJsonObject().getAsJsonArray(KEY_ROUTES).get(0)
                 .getAsJsonObject().getAsJsonArray(KEY_LEGS).get(0)
                 .getAsJsonObject().getAsJsonArray(KEY_STEPS);
 
-        // TODO: remove
-        Log.d("deserialize", "step size: " + stepsArray.size());
-
         List<Step> transitSteps = new ArrayList<>();
         for (int i = 0; i <stepsArray.size(); i++) {
             JsonElement innerObject = stepsArray.get(i);
-            if (innerObject.getAsJsonObject().get(KEY_TRAVEL_MODE).getAsString().equals(VALUE_TRANSIT)) {
+            if (innerObject.getAsJsonObject().get(KEY_TRAVEL_MODE).getAsString()
+                    .equals(VALUE_TRANSIT)) {
                 JsonElement transitDetails = innerObject.getAsJsonObject().get(KEY_TRANSIT_DETAILS);
 
-                String vehicleType = transitDetails.getAsJsonObject().get(KEY_LINE).getAsJsonObject().get(KEY_VEHICLE).getAsJsonObject().get(KEY_TYPE).getAsString();
+                String vehicleType = transitDetails.getAsJsonObject()
+                        .get(KEY_LINE).getAsJsonObject()
+                        .get(KEY_VEHICLE).getAsJsonObject()
+                        .get(KEY_TYPE).getAsString();
+
                 if (vehicleType.equals(KEY_HEAVY_RAIL)) {
                     Step step = new Step();
                     step.setArrivalStop(transitDetails.getAsJsonObject()
@@ -71,13 +72,10 @@ public class DirectionsDeserialiser implements JsonDeserializer<List<Step>>{
                             .get(KEY_NAME).getAsString());
                     transitSteps.add(step);
                 } else {
-                    return transitSteps;
+                    return new ArrayList<>();
                 }
             }
         }
-
-        // TODO: remove
-        Log.d("deserialize()", "transitSteps size: " + transitSteps.size());
 
         return transitSteps;
     }
