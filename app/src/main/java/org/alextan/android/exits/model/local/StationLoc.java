@@ -1,8 +1,6 @@
 package org.alextan.android.exits.model.local;
 
-import com.orm.SugarRecord;
-
-public class StationLoc extends SugarRecord{
+public class StationLoc {
 
     private int stopIndex;
     private String stopId;

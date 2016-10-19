@@ -47,6 +47,5 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'javax.annotation:javax.annotation-api:1.2'
     compile 'com.jakewharton:butterknife:8.4.0'
-    compile('com.github.satyan:sugar:1.4') { exclude module: 'support-v4' }
     compile 'com.simplecityapps:recyclerview-fastscroll:1.0.11'
 }
