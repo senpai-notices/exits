@@ -1,13 +1,8 @@
 <resources>
     <string name="app_name">Exits</string>
-    <string name="title_activity_history">History</string>
-    <string name="title_activity_trip">Trip</string>
     <string name="lbl_nearest_station">Nearest station</string>
     <string name="lbl_destination_prompt">Where do you want to go?</string>
     <string name="lbl_btn_complete">Go!</string>
-    <string name="tv_todo">Trip history goes here…</string>
-    <string name="tv_todo1">Place recommended path result here!</string>
-    <string name="agency_sydney_trains">Sydney Trains</string>
     <string name="line_t1">T1 Line</string>
     <string name="line_t2">T2 Line</string>
     <string name="line_t3">T3 Line</string>
@@ -22,10 +17,8 @@
     <string name="msg_no_results">Sorry, no available results at this time! Please try again later!</string>
     <string name="msg_loading">Loading...</string>
     <string name="choose_station">Choose station</string>
-    <string name="msg_null_stationlocation">There was a problem in retrieving the station. Please try again</string>
     <string name="msg_wait">Please wait for Exits to detect your nearest station</string>
     <string name="msg_empty_destination">Please choose your destination!</string>
     <string name="title_act_stations">Choose your destination</string>
     <string name="title_act_trip">Your trip</string>
-
 </resources>
