@@ -7,8 +7,11 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class Station {
-    @SerializedName("station_id") private int mId;
-    @SerializedName("name") private String mName;
+
+    @SerializedName("station_id")
+    private int mId;
+    @SerializedName("name")
+    private String mName;
 
     public Station(int id, String name) {
         mId = id;

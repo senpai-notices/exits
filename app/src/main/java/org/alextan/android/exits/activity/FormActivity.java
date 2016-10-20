@@ -149,12 +149,6 @@ public class FormActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onPause() {
         super.onPause();
-        if (mGeoBroadcastReceiver != null) {
-            unregisterReceiver(mGeoBroadcastReceiver);
-        }
-        if (mGeoStatusBroadcastReceiver != null) {
-            unregisterReceiver(mGeoStatusBroadcastReceiver);
-        }
 
         if (isServiceRunning(GeolocationService.class)) {
             stopService(new Intent(getApplicationContext(), GeolocationService.class));
@@ -164,13 +158,6 @@ public class FormActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        // apprarently, it does not check enough that a reciever is registered
-        if (mGeoBroadcastReceiver != null) {
-            unregisterReceiver(mGeoBroadcastReceiver);
-        }
-        if (mGeoStatusBroadcastReceiver != null) {
-            unregisterReceiver(mGeoStatusBroadcastReceiver);
-        }
 
         if (isServiceRunning(GeolocationService.class)) {
             stopService(new Intent(getApplicationContext(), GeolocationService.class));

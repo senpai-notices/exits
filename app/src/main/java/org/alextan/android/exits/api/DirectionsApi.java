@@ -26,13 +26,8 @@ public interface DirectionsApi {
     String PARAM_VALUE_TRANSIT_MODE = "train";
     String URL = "https://maps.googleapis.com/maps/api/directions/";
 
-    //TODO
-    String TEMP = "&departure_time=1476921600"; // 10 am weekday
-    String TEMP2 = "&departure_time=1476886594"; // ~ midnight weekday
-
-
     @GET("json?" + PARAM_KEY_API_KEY + "=" + PARAM_VALUE_API_KEY + "&" + PARAM_KEY_MODE + "="
-            + PARAM_VALUE_MODE + "&" + PARAM_KEY_TRANSIT_MODE + "=" + PARAM_VALUE_TRANSIT_MODE + TEMP)
+            + PARAM_VALUE_MODE + "&" + PARAM_KEY_TRANSIT_MODE + "=" + PARAM_VALUE_TRANSIT_MODE)
     Call<List<Step>> getDirection(@Query("origin") String origin,
                                   @Query("destination") String destination);
 

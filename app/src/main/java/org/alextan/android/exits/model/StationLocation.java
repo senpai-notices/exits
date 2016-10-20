@@ -3,6 +3,9 @@ package org.alextan.android.exits.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * Train station with location
+ */
 public class StationLocation {
     @SerializedName("stop_index")
     @Expose

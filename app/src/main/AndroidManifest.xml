@@ -22,11 +22,13 @@
         </activity>
         <activity
             android:name=".activity.StationsActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:label="@string/title_act_stations">
         </activity>
         <activity
             android:name=".activity.TripActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:label="@string/title_act_trip">
         </activity>
 
         <service android:name=".service.GeolocationService"/>

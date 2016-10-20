@@ -25,5 +25,7 @@
     <string name="msg_null_stationlocation">There was a problem in retrieving the station. Please try again</string>
     <string name="msg_wait">Please wait for Exits to detect your nearest station</string>
     <string name="msg_empty_destination">Please choose your destination!</string>
+    <string name="title_act_stations">Choose your destination</string>
+    <string name="title_act_trip">Your trip</string>
 
 </resources>
