@@ -5,7 +5,6 @@
     android:id="@+id/trip_item_root_layout">
 
     <TextView
-        android:text="Station Name"
         android:textAppearance="?android:attr/textAppearanceListItem"
         android:layout_width="fill_parent"
         android:layout_height="40dp"
