@@ -2,7 +2,7 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="140dp"
+    android:layout_height="125dp"
     android:id="@+id/trip_item_root_layout"
     android:paddingBottom="15dp">
 
@@ -62,19 +62,19 @@
             android:id="@+id/trip_item_tv_line"
             android:layout_below="@+id/trip_item_tv_origin"
             android:textAppearance="?android:attr/textAppearanceListItem"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Duration"
-            android:id="@+id/trip_item_tv_duration"
-            android:layout_below="@+id/trip_item_tv_line"
-            android:textAppearance="?android:attr/textAppearanceListItem"/>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:id="@+id/trip_item_space"
+            android:layout_below="@id/trip_item_tv_line"/>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Destination"
             android:id="@+id/trip_item_tv_destination"
-            android:layout_below="@+id/trip_item_tv_duration"
+            android:layout_below="@+id/trip_item_space"
             android:textAppearance="?android:attr/textAppearanceListItem"
             android:textSize="30sp"/>
     </RelativeLayout>

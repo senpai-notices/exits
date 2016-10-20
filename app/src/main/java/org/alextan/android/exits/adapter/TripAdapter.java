@@ -50,7 +50,6 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
         private TextView mTvOrigin;
         private TextView mTvDestination;
         private TextView mTvLine;
-        private TextView mTvDuration;
         private RelativeLayout mLayoutLine;
 
         public ViewHolder(View itemView) {
@@ -61,7 +60,6 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
             mTvOrigin = (TextView) itemView.findViewById(R.id.trip_item_tv_origin);
             mTvDestination = (TextView) itemView.findViewById(R.id.trip_item_tv_destination);
             mTvLine = (TextView) itemView.findViewById(R.id.trip_item_tv_line);
-            mTvDuration = (TextView) itemView.findViewById(R.id.trip_item_tv_duration);
             mLayoutLine = (RelativeLayout) itemView.findViewById(R.id.trip_item_layout_line);
         }
 
@@ -73,7 +71,6 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
             mTvOrigin.setText(mItem.getDepartureStop());
             mTvDestination.setText(mItem.getArrivalStop());
             mTvLine.setText(mItem.getLine());
-            mTvDuration.setText("Duration");
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 mLayoutLine.setBackground(mContext.getDrawable(
                         TrainUtil.fetchLineDrawable(mItem.getLine(), mContext)));
