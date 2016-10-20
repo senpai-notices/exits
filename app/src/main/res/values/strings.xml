@@ -15,7 +15,7 @@
     <string name="permission_rationale_location">Exits needs your location in order to function.</string>
     <string name="error_tag">"Error: "</string>
     <string name="msg_no_results">Sorry, no available results at this time! Please try again later!</string>
-    <string name="msg_loading">Loading...</string>
+    <string name="msg_loading">Loading…</string>
     <string name="choose_station">Choose station</string>
     <string name="msg_wait">Please wait for Exits to detect your nearest station</string>
     <string name="msg_empty_destination">Please choose your destination!</string>
