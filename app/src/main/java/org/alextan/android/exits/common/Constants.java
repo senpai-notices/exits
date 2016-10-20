@@ -53,4 +53,8 @@ public class Constants {
     public static final String SUBSTRING_SYD_MEL_2 = "Sydney - Melbourne";
     public static final String COMMA = ",";
     public static final int ZERO = 0;
+    public static final String SEARCH_MQU = "Macquarie University";
+    public static final String SEARCH_INTL_AIRPORT = "International Airport";
+    public static final String CLEANSED_MQU = "Macquarie U";
+    public static final String CLEANSED_INTL_AIRPORT = "Intl Airport";
 }
