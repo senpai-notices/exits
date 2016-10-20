@@ -22,6 +22,9 @@ import java.util.Comparator;
 
 import retrofit2.Call;
 
+/**
+ * Shows list of destination stations
+ */
 public class StationsActivity extends AppCompatActivity {
 
     private RecyclerView mStationRecyclerView;
@@ -40,6 +43,9 @@ public class StationsActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Fetch list of stations from API
+     */
     private class FetchStationListTask extends AsyncTask<Void, Void, ArrayList<StationLocation>> {
 
         @Override

@@ -17,6 +17,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
+/**
+ * Google Maps Directions API
+ * Fetches route of trip
+ */
 public interface DirectionsApi {
     String PARAM_KEY_API_KEY = "key";
     String PARAM_VALUE_API_KEY = "***REMOVED***";

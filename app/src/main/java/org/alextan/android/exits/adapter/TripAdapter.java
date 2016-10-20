@@ -15,6 +15,10 @@ import org.alextan.android.exits.util.TripUtil;
 
 import java.util.List;
 
+/**
+ * RecyclerView Adapter for TripActivity
+ * View of a list of user's trip
+ */
 public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
 
     private Context mContext;
@@ -42,6 +46,9 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
         return mSteps.size();
     }
 
+    /**
+     * View holder for managing items of the recycler view
+     */
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private Step mItem;

@@ -10,7 +10,6 @@ import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -21,6 +20,9 @@ import com.google.android.gms.maps.model.LatLng;
 
 import org.alextan.android.exits.common.Constants;
 
+/**
+ * Service for accessing device's geolocation
+ */
 public class GeolocationService extends Service implements LocationListener,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
@@ -33,14 +35,11 @@ public class GeolocationService extends Service implements LocationListener,
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        Log.d("GeoService", "onBind");
         return null;
     }
 
     @Override
     public void onCreate() {
-        Log.d("GeoService", "onCreate");
-
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(LocationServices.API)
                 .addConnectionCallbacks(this)
@@ -50,8 +49,6 @@ public class GeolocationService extends Service implements LocationListener,
 
     @Override
     public void onDestroy() {
-        Log.d("GeoService", "onDestroy");
-
         if (mGoogleApiClient.isConnected()) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
         }
@@ -65,8 +62,6 @@ public class GeolocationService extends Service implements LocationListener,
 
     @Override
     public void onLocationChanged(Location location) {
-        Log.d("GeoService", "onLocationChanged");
-
         Intent updateLocationIntent = new Intent(Constants.ACTION_LOCATION_UPDATE);
         updateLocationIntent.putExtra(Constants.EXTRA_CURRENT_LATLNG,
                 new LatLng(location.getLatitude(), location.getLongitude()));
@@ -75,10 +70,7 @@ public class GeolocationService extends Service implements LocationListener,
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        Log.d("GeoService", "onConnected");
-
         // Get last known recent location.
-
         //noinspection MissingPermission
         Location currentLocation = LocationServices.FusedLocationApi
                 .getLastLocation(mGoogleApiClient);
@@ -90,9 +82,10 @@ public class GeolocationService extends Service implements LocationListener,
         startLocationUpdates();
     }
 
+    /**
+     * Poll for new location updates
+     */
     protected void startLocationUpdates() {
-        Log.d("GeoService", "startLocationUpdates");
-
         // Create the location request
         mLocationRequest = LocationRequest.create()
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
@@ -108,29 +101,28 @@ public class GeolocationService extends Service implements LocationListener,
 
     @Override
     public void onConnectionSuspended(int i) {
-        Log.d("GeoService", "onConnectionSuspended");
-
         if (i == CAUSE_SERVICE_DISCONNECTED) {
             Intent geoStatusIntent = new Intent(Constants.ACTION_GEO_STATUS);
-            geoStatusIntent.putExtra(Constants.EXTRA_LOCATION_DISCONNECTED, "");
+            geoStatusIntent.putExtra(Constants.EXTRA_LOCATION_DISCONNECTED, Constants.NULL);
             sendBroadcast(geoStatusIntent);
         } else if (i == CAUSE_NETWORK_LOST) {
             Intent geoStatusIntent = new Intent(Constants.ACTION_GEO_STATUS);
-            geoStatusIntent.putExtra(Constants.EXTRA_NETWORK_LOST, "");
+            geoStatusIntent.putExtra(Constants.EXTRA_NETWORK_LOST, Constants.NULL);
             sendBroadcast(geoStatusIntent);
         }
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.d("GeoService", "onConnectionFailed");
         Intent geoStatusIntent = new Intent(Constants.ACTION_GEO_STATUS);
         geoStatusIntent.putExtra(Constants.EXTRA_CONN_FAILED, connectionResult.getErrorMessage());
         sendBroadcast(geoStatusIntent);
     }
 
+    /**
+     * Checks if user has permissions for location
+     */
     private boolean runtimePermissions() {
-        Log.d("GeoService", "runtimePermissions");
         if(Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission(this, android.Manifest
                 .permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(this, android.Manifest.permission

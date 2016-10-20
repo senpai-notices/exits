@@ -13,6 +13,9 @@ import org.alextan.android.exits.model.Step;
 
 import java.util.List;
 
+/**
+ * Shows user's selected trip of stations
+ */
 public class TripActivity extends AppCompatActivity {
 
     private RecyclerView mTripRecyclerView;

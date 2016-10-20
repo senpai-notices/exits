@@ -82,6 +82,9 @@ public class FormActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    /**
+     * Intialise UI objects and set onClickListeners
+     */
     private void initialiseUi() {
         ButterKnife.bind(this);
 
@@ -164,6 +167,9 @@ public class FormActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    /**
+     * Prompt for location access permissions
+     */
     private boolean runtimePermissions() {
         mBtnGo.setEnabled(false);
         mTvDestination.setEnabled(false);
@@ -251,6 +257,9 @@ public class FormActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    /**
+     * Get nearest station of the user's current location
+     */
     private class FetchNearestStationTask extends AsyncTask<Void, Void, StationLocation> {
 
         private double mCurrentLat;
@@ -300,6 +309,9 @@ public class FormActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    /**
+     * Get station information by ID
+     */
     private class FetchStationTask extends AsyncTask<Void, Void, StationLocation> {
 
         private int mStationIndex;
@@ -336,6 +348,9 @@ public class FormActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    /**
+     * Calls Directions API for trip routing
+     */
     private class FetchDirectionsTask extends AsyncTask<Void, Void, List<Step>> {
 
         @Override
@@ -379,6 +394,9 @@ public class FormActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    /**
+     * Determines if a service is currently running
+     */
     private boolean isServiceRunning(Class<?> serviceClass) {
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service :

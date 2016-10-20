@@ -14,11 +14,14 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DreamFactoryJsonDeserialiser<T> implements JsonDeserializer<DreamFactoryResource<T>> {
+/**
+ * Deserialiser for responses of DreamFactory REST API calls.
+ */
+public class DreamFactoryDeserialiser<T> implements JsonDeserializer<DreamFactoryResource<T>> {
 
     private final Class<T> clazz;
 
-    public DreamFactoryJsonDeserialiser(Class<T> clazz) {
+    public DreamFactoryDeserialiser(Class<T> clazz) {
         this.clazz = clazz;
     }
 

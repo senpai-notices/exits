@@ -5,7 +5,10 @@ import android.os.Parcelable;
 
 import org.alextan.android.exits.util.TripUtil;
 
-public class Step implements Parcelable{
+/**
+ * A component of a train trip. One trip may contain 1 or more Steps
+ */
+public class Step implements Parcelable {
 
     private String mArrivalStop;
     private String mArrivalTime;
@@ -56,6 +59,9 @@ public class Step implements Parcelable{
         mLine = TripUtil.cleanseLineName(line);
     }
 
+    /**
+     * Constructor for the Parcelable representation
+     */
     protected Step(Parcel in) {
         mArrivalStop = in.readString();
         mArrivalTime = in.readString();
@@ -64,6 +70,9 @@ public class Step implements Parcelable{
         mLine = in.readString();
     }
 
+    /**
+     * Required for Parcelable objects. Includes defining the Parcelable constructor
+     */
     public static final Creator<Step> CREATOR = new Creator<Step>() {
         @Override
         public Step createFromParcel(Parcel in) {

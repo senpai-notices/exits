@@ -19,6 +19,10 @@ import org.alextan.android.exits.model.StationLocation;
 
 import java.util.List;
 
+/**
+ * RecyclerView Adapter for StationsActivity
+ * View of a list of destination stations
+ */
 public class StationsAdapter extends RecyclerView.Adapter<StationsAdapter.ViewHolder>
         implements FastScrollRecyclerView.SectionedAdapter {
 
@@ -53,6 +57,9 @@ public class StationsAdapter extends RecyclerView.Adapter<StationsAdapter.ViewHo
         return mStations.get(position).getStopName().substring(0, 1);
     }
 
+    /**
+     * View holder for managing items of the recycler view
+     */
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView mTvStationName;

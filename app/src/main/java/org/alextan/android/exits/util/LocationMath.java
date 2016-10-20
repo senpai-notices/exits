@@ -16,12 +16,19 @@ public class LocationMath {
 
     public static final double MAX_VALUE = 999999.99;
 
-    public static StationLocation nearest(List<StationLocation> stations, double currentLat, double currentLng) {
+
+    /**
+     * Calculate the nearest station, given the current location.
+     * Searches through a list of possible stations, then calculates nearest one.
+     */
+    public static StationLocation nearest(List<StationLocation> stations, double currentLat,
+                                          double currentLng) {
         Hashtable<StationLocation, Double> distances = new Hashtable<>();
 
-        for (StationLocation s : stations) {
-            double distance = pythagoreanTheorem(s.getStopLat() - currentLat, s.getStopLon() - currentLng);
-            distances.put(s, distance);
+        for (StationLocation station : stations) {
+            double distance = pythagoreanTheorem(station.getStopLat() - currentLat,
+                    station.getStopLon() - currentLng);
+            distances.put(station, distance);
         }
 
         Pair<StationLocation, Double> closest = new Pair<>(new StationLocation(), MAX_VALUE);
@@ -35,6 +42,9 @@ public class LocationMath {
         return closest.first;
     }
 
+    /**
+     * The Pythagorean Theorem.
+     */
     public static double pythagoreanTheorem(double x, double y) {
         double c = Math.sqrt((x*x)+(y*y));
         return c;

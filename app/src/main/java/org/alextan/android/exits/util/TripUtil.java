@@ -11,6 +11,8 @@ import org.alextan.android.exits.common.Constants;
 public class TripUtil {
 
     /**
+     * Cleanse station name strings retrieved from the Directions API.
+     * Original strings have a 'station' suffix or are too long for displaying on phone screens.
      * Note: strings are stored in constants rather than string resources because context is not
      * available in the calling object.
      */
@@ -27,6 +29,9 @@ public class TripUtil {
     }
 
     /**
+     * Cleanse line name strings retrieved from the Directions API.
+     * Original line strings have a are too long for displaying on phone screens or are
+     * inconsistent.
      * Note: line names are stored in constants rather than string resources because context is not
      * available in the calling object.
      */
@@ -60,6 +65,9 @@ public class TripUtil {
         }
     }
 
+    /**
+     * Fetch the resource ID of a line, given the line name
+     */
     public static int chooseLineColour(String line, Context context) {
         if (line.equals(context.getResources().getString(R.string.line_t1))) {
             return R.color.colorT1Line;
@@ -80,6 +88,9 @@ public class TripUtil {
         }
     }
 
+    /**
+     * Fetch drawable shape of a line, given the line name
+     */
     public static int fetchLineDrawable(String line, Context context) {
         if (line.equals(context.getResources().getString(R.string.line_t1))) {
             return R.drawable.round_corner_t1;

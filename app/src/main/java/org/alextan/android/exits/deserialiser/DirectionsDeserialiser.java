@@ -13,6 +13,9 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Deserialiser for responses ofGoogle Maps Directions API calls.
+ */
 public class DirectionsDeserialiser implements JsonDeserializer<List<Step>>{
 
     public static final String KEY_ROUTES = "routes";

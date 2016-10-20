@@ -4,6 +4,9 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+/**
+ * Object for the deserialised response to a DreamFactory REST API call.
+ */
 public class DreamFactoryResource<T> {
     @SerializedName("resource") private List<T> data;
 
