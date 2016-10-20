@@ -9,27 +9,27 @@ import com.google.gson.annotations.SerializedName;
 public class StationLocation {
     @SerializedName("stop_index")
     @Expose
-    private int stopIndex;
+    private int mStopIndex;
     @SerializedName("stop_id")
     @Expose
-    private String stopId;
+    private String mStopId;
     @SerializedName("stop_name")
     @Expose
-    private String stopName;
+    private String mStopName;
     @SerializedName("stop_lat")
     @Expose
-    private double stopLat;
+    private double mStopLat;
     @SerializedName("stop_lon")
     @Expose
-    private double stopLon;
+    private double mStopLon;
 
     /**
      *
      * @return
-     * The stopIndex
+     * The mStopIndex
      */
     public int getStopIndex() {
-        return stopIndex;
+        return mStopIndex;
     }
 
     /**
@@ -38,16 +38,16 @@ public class StationLocation {
      * The stop_index
      */
     public void setStopIndex(int stopIndex) {
-        this.stopIndex = stopIndex;
+        this.mStopIndex = stopIndex;
     }
 
     /**
      *
      * @return
-     * The stopId
+     * The mStopId
      */
     public String getStopId() {
-        return stopId;
+        return mStopId;
     }
 
     /**
@@ -56,16 +56,16 @@ public class StationLocation {
      * The stop_id
      */
     public void setStopId(String stopId) {
-        this.stopId = stopId;
+        this.mStopId = stopId;
     }
 
     /**
      *
      * @return
-     * The stopName
+     * The mStopName
      */
     public String getStopName() {
-        return stopName;
+        return mStopName;
     }
 
     /**
@@ -74,16 +74,16 @@ public class StationLocation {
      * The stop_name
      */
     public void setStopName(String stopName) {
-        this.stopName = stopName;
+        this.mStopName = stopName;
     }
 
     /**
      *
      * @return
-     * The stopLat
+     * The mStopLat
      */
     public double getStopLat() {
-        return stopLat;
+        return mStopLat;
     }
 
     /**
@@ -92,16 +92,16 @@ public class StationLocation {
      * The stop_lat
      */
     public void setStopLat(double stopLat) {
-        this.stopLat = stopLat;
+        this.mStopLat = stopLat;
     }
 
     /**
      *
      * @return
-     * The stopLon
+     * The mStopLon
      */
     public double getStopLon() {
-        return stopLon;
+        return mStopLon;
     }
 
     /**
@@ -110,7 +110,7 @@ public class StationLocation {
      * The stop_lon
      */
     public void setStopLon(double stopLon) {
-        this.stopLon = stopLon;
+        this.mStopLon = stopLon;
     }
 
 }
