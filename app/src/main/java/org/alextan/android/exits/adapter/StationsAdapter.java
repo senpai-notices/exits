@@ -19,7 +19,8 @@ import org.alextan.android.exits.model.StationLocation;
 
 import java.util.List;
 
-public class StationsAdapter extends RecyclerView.Adapter<StationsAdapter.ViewHolder> implements FastScrollRecyclerView.SectionedAdapter{
+public class StationsAdapter extends RecyclerView.Adapter<StationsAdapter.ViewHolder>
+        implements FastScrollRecyclerView.SectionedAdapter {
 
     private Context mContext;
     private List<StationLocation> mStations;
@@ -31,7 +32,8 @@ public class StationsAdapter extends RecyclerView.Adapter<StationsAdapter.ViewHo
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.station_item, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.station_item,
+                parent, false);
         return new ViewHolder(itemView);
     }
 

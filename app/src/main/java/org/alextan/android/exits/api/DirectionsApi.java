@@ -20,8 +20,6 @@ import retrofit2.http.Query;
 public interface DirectionsApi {
     String PARAM_KEY_API_KEY = "key";
     String PARAM_VALUE_API_KEY = "***REMOVED***";
-    String PARAM_KEY_ORIGIN = "origin";
-    String PARAM_KEY_DESTINATION = "destination";
     String PARAM_KEY_MODE = "mode";
     String PARAM_VALUE_MODE = "transit";
     String PARAM_KEY_TRANSIT_MODE = "transit_mode";
@@ -35,7 +33,8 @@ public interface DirectionsApi {
 
     @GET("json?" + PARAM_KEY_API_KEY + "=" + PARAM_VALUE_API_KEY + "&" + PARAM_KEY_MODE + "="
             + PARAM_VALUE_MODE + "&" + PARAM_KEY_TRANSIT_MODE + "=" + PARAM_VALUE_TRANSIT_MODE + TEMP)
-    Call<List<Step>> getDirection(@Query("origin") String origin, @Query("destination") String destination);
+    Call<List<Step>> getDirection(@Query("origin") String origin,
+                                  @Query("destination") String destination);
 
     Type stepListType = new TypeToken<List<Step>>(){}.getType();
 

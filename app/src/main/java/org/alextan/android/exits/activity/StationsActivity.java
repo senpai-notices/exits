@@ -8,12 +8,12 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import org.alextan.android.exits.common.Constants;
 import org.alextan.android.exits.R;
 import org.alextan.android.exits.adapter.StationsAdapter;
+import org.alextan.android.exits.api.GtfsApi;
+import org.alextan.android.exits.common.Constants;
 import org.alextan.android.exits.model.DreamFactoryResource;
 import org.alextan.android.exits.model.StationLocation;
-import org.alextan.android.exits.api.GtfsApi;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,17 +35,17 @@ public class StationsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_stations);
         mOriginStationIndex = getIntent()
                 .getIntExtra(Constants.EXTRA_STATION_INDEX, Constants.STATION_INDEX_DEFAULT_VALUE);
-        if (mOriginStationIndex > 0) {
+        if (mOriginStationIndex > Constants.ZERO) {
             new FetchStationListTask().execute();
         }
-        // or redirect back to form
     }
 
     private class FetchStationListTask extends AsyncTask<Void, Void, ArrayList<StationLocation>> {
 
         @Override
         protected void onPreExecute() {
-            mLoadingDialog = ProgressDialog.show(StationsActivity.this, null, getString(R.string.msg_loading), true, false);
+            mLoadingDialog = ProgressDialog.show(StationsActivity.this, null,
+                    getString(R.string.msg_loading), true, false);
         }
 
         @Override
@@ -56,8 +56,8 @@ public class StationsActivity extends AppCompatActivity {
             try {
                 response = call.execute().body();
             } catch (IOException e) {
-                e.printStackTrace();
                 call.cancel();
+                cancel(true);
             }
 
             ArrayList<StationLocation> result;

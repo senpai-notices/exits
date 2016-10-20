@@ -27,7 +27,8 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.trip_item, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.trip_item, parent,
+                false);
         return new ViewHolder(itemView);
     }
 
@@ -55,7 +56,8 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
         public ViewHolder(View itemView) {
             super(itemView);
             mTvArrivalTime = (TextView) itemView.findViewById(R.id.station_item_tv_arrival_time);
-            mTvDepartureTime = (TextView) itemView.findViewById(R.id.station_item_tv_departure_time);
+            mTvDepartureTime = (TextView) itemView
+                    .findViewById(R.id.station_item_tv_departure_time);
             mTvOrigin = (TextView) itemView.findViewById(R.id.trip_item_tv_origin);
             mTvDestination = (TextView) itemView.findViewById(R.id.trip_item_tv_destination);
             mTvLine = (TextView) itemView.findViewById(R.id.trip_item_tv_line);
@@ -73,9 +75,11 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
             mTvLine.setText(mItem.getLine());
             mTvDuration.setText("Duration");
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                mLayoutLine.setBackground(mContext.getDrawable(TrainUtil.fetchLineDrawable(mItem.getLine(), mContext)));
+                mLayoutLine.setBackground(mContext.getDrawable(
+                        TrainUtil.fetchLineDrawable(mItem.getLine(), mContext)));
             } else {
-                mLayoutLine.setBackgroundResource(TrainUtil.chooseLineColour(mItem.getLine(), mContext));
+                mLayoutLine.setBackgroundResource(TrainUtil.chooseLineColour(mItem.getLine(),
+                        mContext));
             }
         }
     }

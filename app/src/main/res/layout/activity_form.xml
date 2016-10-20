@@ -49,7 +49,8 @@
             android:layout_height="30dp"
             android:layout_centerVertical="true"
             android:id="@+id/act_form_progress_origin"
-            android:layout_toRightOf="@id/act_form_ic_location"/>
+            android:layout_toRightOf="@id/act_form_ic_location"
+            android:visibility="gone"/>
 
     </RelativeLayout>
 
@@ -70,12 +71,6 @@
         android:textAppearance="?android:attr/textAppearance"
         android:text="@string/choose_station"
         android:id="@+id/act_form_tv_destination"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Find station"
-        android:id="@+id/act_form_btn_test"/>
 
     <Space
         android:layout_width="wrap_content"

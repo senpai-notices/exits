@@ -21,6 +21,8 @@ public class TrainUtil {
                 .replace(Constants.SEARCH_TRAIN_1, Constants.NULL)
                 .replace(Constants.SEARCH_TRAIN_2, Constants.NULL)
                 .replace(Constants.SEARCH_SHELLHARBOUR, Constants.CLEANSED_SHELLHARBOUR)
+                .replace("Macquarie University", "Macquarie U")
+                .replace("International Airport", "Intl Airport")
                 .trim();
     }
 

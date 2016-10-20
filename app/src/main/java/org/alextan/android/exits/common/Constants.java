@@ -51,4 +51,6 @@ public class Constants {
     public static final String SEARCH_SHELLHARBOUR = "Shellharbour Junction";
     public static final String SUBSTRING_SYD_MEL_1 = "Melbourne - Sydney";
     public static final String SUBSTRING_SYD_MEL_2 = "Sydney - Melbourne";
+    public static final String COMMA = ",";
+    public static final int ZERO = 0;
 }
