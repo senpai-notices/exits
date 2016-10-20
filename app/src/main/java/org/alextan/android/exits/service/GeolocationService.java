@@ -68,7 +68,8 @@ public class GeolocationService extends Service implements LocationListener,
         Log.d("GeoService", "onLocationChanged");
 
         Intent updateLocationIntent = new Intent(Constants.ACTION_LOCATION_UPDATE);
-        updateLocationIntent.putExtra(Constants.EXTRA_CURRENT_LATLNG, new LatLng(location.getLatitude(), location.getLongitude()));
+        updateLocationIntent.putExtra(Constants.EXTRA_CURRENT_LATLNG,
+                new LatLng(location.getLatitude(), location.getLongitude()));
         sendBroadcast(updateLocationIntent);
     }
 
@@ -84,11 +85,6 @@ public class GeolocationService extends Service implements LocationListener,
         // Note that this can be NULL if last location isn't already known.
         if (currentLocation != null) {
             // Print current location if not null
-            Log.d("DEBUG", "current location: " + currentLocation.toString());
-            LatLng latLng = new LatLng(currentLocation.getLatitude(),
-                    currentLocation.getLongitude());
-
-            //TODO: make intent here?
         }
         // Begin polling for new location updates.
         startLocationUpdates();
