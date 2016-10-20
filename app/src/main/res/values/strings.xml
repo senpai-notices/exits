@@ -5,7 +5,7 @@
     <string name="lbl_nearest_station">Nearest station</string>
     <string name="lbl_destination_prompt">Where do you want to go?</string>
     <string name="lbl_btn_complete">Go!</string>
-    <string name="tv_todo">Trip history goes here...</string>
+    <string name="tv_todo">Trip history goes here…</string>
     <string name="tv_todo1">Place recommended path result here!</string>
     <string name="agency_sydney_trains">Sydney Trains</string>
     <string name="line_t1">T1 Line</string>
