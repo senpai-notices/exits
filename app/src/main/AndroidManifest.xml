@@ -21,12 +21,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.HistoryActivity"
-            android:label="@string/title_activity_history"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity
             android:name=".activity.StationsActivity"
             android:screenOrientation="portrait">
         </activity>
