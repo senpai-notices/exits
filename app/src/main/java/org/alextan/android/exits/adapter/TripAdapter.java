@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import org.alextan.android.exits.R;
 import org.alextan.android.exits.model.Step;
-import org.alextan.android.exits.util.TrainUtil;
+import org.alextan.android.exits.util.TripUtil;
 
 import java.util.List;
 
@@ -73,9 +73,9 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
             mTvLine.setText(mItem.getLine());
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 mLayoutLine.setBackground(mContext.getDrawable(
-                        TrainUtil.fetchLineDrawable(mItem.getLine(), mContext)));
+                        TripUtil.fetchLineDrawable(mItem.getLine(), mContext)));
             } else {
-                mLayoutLine.setBackgroundResource(TrainUtil.chooseLineColour(mItem.getLine(),
+                mLayoutLine.setBackgroundResource(TripUtil.chooseLineColour(mItem.getLine(),
                         mContext));
             }
         }

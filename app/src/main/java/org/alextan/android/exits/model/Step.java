@@ -3,7 +3,7 @@ package org.alextan.android.exits.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import org.alextan.android.exits.util.TrainUtil;
+import org.alextan.android.exits.util.TripUtil;
 
 public class Step implements Parcelable{
 
@@ -21,7 +21,7 @@ public class Step implements Parcelable{
     }
 
     public void setArrivalStop(String arrivalStop) {
-        mArrivalStop = TrainUtil.cleanseStationName(arrivalStop);
+        mArrivalStop = TripUtil.cleanseStationName(arrivalStop);
     }
 
     public String getArrivalTime() {
@@ -37,7 +37,7 @@ public class Step implements Parcelable{
     }
 
     public void setDepartureStop(String departureStop) {
-        mDepartureStop = TrainUtil.cleanseStationName(departureStop);
+        mDepartureStop = TripUtil.cleanseStationName(departureStop);
     }
 
     public String getDepartureTime() {
@@ -53,7 +53,7 @@ public class Step implements Parcelable{
     }
 
     public void setLine(String line) {
-        mLine = TrainUtil.cleanseLineName(line);
+        mLine = TripUtil.cleanseLineName(line);
     }
 
     protected Step(Parcel in) {

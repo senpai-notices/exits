@@ -6,9 +6,9 @@ import org.alextan.android.exits.R;
 import org.alextan.android.exits.common.Constants;
 
 /**
- * Crap
+ * Utility methods related to Trip objects
  */
-public class TrainUtil {
+public class TripUtil {
 
     /**
      * Note: strings are stored in constants rather than string resources because context is not
